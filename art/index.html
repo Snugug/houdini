@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generative Art as Background w/Houdini</title>
+</head>
+<script type="text/javascript">
+  window.CSS.registerProperty({
+    name: '--art-color',
+    syntax: '<color>',
+    inherits: false,
+    initialValue: 'white',
+  });
+
+  window.CSS.registerProperty({
+    name: '--art-steps',
+    syntax: '<number>',
+    inherits: false,
+    initialValue: 40,
+  });
+
+  window.CSS.registerProperty({
+    name: '--art-alpha',
+    syntax: '<number>',
+    inherits: false,
+    initialValue: 1,
+  });
+
+  window.CSS.paintWorklet.addModule('./art.js');
+</script>
+<style type="text/css">
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  h1 {
+    color: white;
+    font-size: 3em;
+    font-family: sans-serif;
+    height: 50vh;
+    margin: 0;
+
+    --art-color: rgba(255, 255, 255, .25);
+    --art-alpha: .05;
+    --art-steps: 50;
+
+    background-image: paint(art), linear-gradient(to right, blue, black);
+  }
+</style>
+<body>
+  <h1>Hello World</h1>
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Generative Art as Background w/Houdini</title>
+</head>
+<script type="text/javascript">
+  window.CSS.layoutWorklet.addModule('./block-like.js');
+</script>
+<style type="text/css">
+  body {
+    padding: 0;
+    margin: 0;
+  }
+
+  .block {
+    display: layout(block-like);
+    padding: 2em;
+    border: 1px solid black;
+  }
+</style>
+<body>
+  <div class="block">
+    <h1>Hello World</h1>
+    <div>Foo Bar</div>  
+    <p>Banana</p>
+  </div>
+  
+</body>
+</html>
