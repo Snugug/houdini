@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Paint with Houdini</title>
+</head>
+<script type="text/javascript">
+  window.CSS.registerProperty({
+    name: '--header-stroke-color',
+    syntax: '<color>',
+    inherits: false,
+    initialValue: 'purple',
+  });
+
+  window.CSS.paintWorklet.addModule('paint/brushstroke.js');
+</script>
+<style type="text/css">
+  h1 {
+    --header-stroke-color: purple;
+    background-image: paint(brushstroke);
+    font-family: sans-serif;
+    font-weight: 400;
+    color: white;
+    height: 25vh;
+    /*min-height: 5rem;*/
+    text-align: center;
+    color: white !important;
+    box-sizing: border-box;
+    font-size: calc(1em + 10vh);
+    line-height: 1em;
+    padding-top: calc(15vh / 2);
+  }
+</style>
+<body>
+  <h1>Paint API</h1>
+</body>
+</html>
