@@ -15,26 +15,51 @@
   }
   
 
-  CSS.paintWorklet.addModule('paint/brushstroke.js');
+  CSS.paintWorklet.addModule('/paint/brushstroke.js');
 </script>
 <style type="text/css">
-  h1 {
-    --header-stroke-color: purple;
-    background-image: paint(brushstroke);
-    font-family: sans-serif;
-    font-weight: 400;
-    color: white;
-    height: 25vh;
-    /*min-height: 5rem;*/
-    text-align: center;
-    color: white !important;
+  :root {
+    --grey: #f9f9f9;
+  }
+
+  *, *:before, *:after {
     box-sizing: border-box;
-    font-size: calc(1em + 7vh);
+  }
+
+  body {
+    background-color: var(--grey);
+  }
+
+  h1 {
+    color: var(--grey);
+    font-family: 'Finger Paint', cursive;
+    font-size: calc(2em + 7vh);
+    font-weight: 400;
     line-height: 1em;
-    padding-top: calc(18vh / 2);
+    text-align: center;
+    text-shadow: 4px 4px var(--header-stroke-color), -4px -4px var(--header-stroke-color), 4px -4px var(--header-stroke-color), -4px 4px var(--header-stroke-color);
+    text-transform: uppercase;
+    transform: rotate(-3.5deg);
+  }
+
+  header {
+    --header-stroke-color: #784ca5;
+    align-items: center;
+    background-image: paint(brushstroke);
+    display: flex;
+    height: 25vh;
+    justify-content: center;
+    min-height: 5em;
+    width: 100vw;
   }
 </style>
+<link href="https://fonts.googleapis.com/css?family=Finger+Paint&text=PAINT" rel="stylesheet">
+
+
 <body>
-  <h1>Paint API</h1>
+  <header>
+    <h1>Paint API</h1>  
+  </header>
+  
 </body>
 </html>
