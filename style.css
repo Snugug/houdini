@@ -1,0 +1,37 @@
+/* CSS files add styling rules to your content */
+
+:root {
+  --black: #000d35;
+  --yellow: #ffe2b0;
+  --orange: #ffa578;
+  --pink: #eab0bb;
+  --purple: #996881;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-size: 1em;
+  box-sizing: border-box;
+}
+
+.image-intro {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-gap: 1em;
+  width: 80%;
+  margin: 0 auto;
+  background-color: var(--purple);
+}
+
+.image-intro--image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.image-intro--blockquote {
+  font-size: 2em;
+  padding: .5em 1em .5em 0;
+  color: white;
+}
