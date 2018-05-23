@@ -1,12 +1,12 @@
 registerPaint('brushstroke', class {
   static get inputProperties() {
     return [
-      '--header-stroke-color',
+      '--brush-color',
     ];
   }
 
   paint(ctx, size, props) {
-    const color = props.get('--header-stroke-color');
+    const color = props.get('--brush-color');
 
     console.log(color);
     console.log(size);

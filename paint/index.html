@@ -4,22 +4,34 @@
   <meta charset="UTF-8">
   <title>Paint with Houdini</title>
 </head>
+<script type="text/javascript" src="/shared/editor.js"></script>
+<link rel="stylesheet" type="text/css" href="/shared/editor.css">
 <script type="text/javascript">
   if (CSS.registerProperty) {
     window.CSS.registerProperty({
-      name: '--header-stroke-color',
+      name: '--brush-color',
       syntax: '<color>',
       inherits: false,
       initialValue: 'purple',
     });  
   }
-  
-
   CSS.paintWorklet.addModule('/paint/brushstroke.js');
+
+  window.addEventListener('DOMContentLoaded', () => {
+    const editor = new Editor;
+    editor.run('.editor', {
+      live: true,
+    });
+    console.log(editor);
+  });
 </script>
+
+<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i|Finger+Paint&text=PAINT" rel="stylesheet">
+
 <style type="text/css">
   :root {
     --grey: #f9f9f9;
+    --brush-color: #784ca5;
   }
 
   *, *:before, *:after {
@@ -28,38 +40,159 @@
 
   body {
     background-color: var(--grey);
+    padding: 0;
+    margin: 0;
   }
 
   h1 {
-    color: var(--grey);
-    font-family: 'Finger Paint', cursive;
     font-size: calc(2em + 7vh);
-    font-weight: 400;
-    line-height: 1em;
-    text-align: center;
-    text-shadow: 4px 4px var(--header-stroke-color), -4px -4px var(--header-stroke-color), 4px -4px var(--header-stroke-color), -4px 4px var(--header-stroke-color);
-    text-transform: uppercase;
-    transform: rotate(-3.5deg);
+    padding: .25rem;
+  }
+
+  h2, h3, h4 {
+    line-height: 1;
+    padding: 0;
+    margin: 0;
   }
 
   header {
-    --header-stroke-color: #784ca5;
-    align-items: center;
-    background-image: paint(brushstroke);
-    display: flex;
     height: 25vh;
-    justify-content: center;
     min-height: 5em;
     width: 100vw;
+    /*padding: .5em;*/
   }
-</style>
-<link href="https://fonts.googleapis.com/css?family=Finger+Paint&text=PAINT" rel="stylesheet">
 
+  .paint-api {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+
+  .paint-api--INLINE {
+    display: inline-flex;
+    padding: .5rem 1rem;
+    height: 2em;
+    font-size: .75em;
+  }
+
+  .paint-api--text {
+    color: var(--grey);
+    font-family: 'Finger Paint', cursive;
+    text-shadow: 4px 4px var(--brush-color), -4px -4px var(--brush-color), 4px -4px var(--brush-color), -4px 4px var(--brush-color);
+    text-transform: uppercase;
+    font-weight: 400;
+    line-height: 1em;
+    text-align: center;
+    transform: rotate(-3.5deg);
+  }
+
+  main {
+    font-size: 1.25em;
+    line-height: 1.25;
+    padding: 1em 2em;
+    font-family: 'IBM Plex Sans', sans-serif;
+    max-width: 80ch;
+    margin: 0 auto;
+  }
+
+  code {
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  nav {
+    background: linear-gradient(to bottom, white, grey);
+  }
+
+  nav ul {
+    margin: 0;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  }
+
+  .try-it-out {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    grid-gap: 1em;
+    border: 3px dashed var(--brush-color);
+    padding: .5em .75em;
+  }
+
+  @media (min-width: 66em) { 
+    .try-it-out {
+      width: 70ch;
+      margin-left: 10ch;  
+    }
+  }
+
+/*  #try-it-out .editor--textarea,
+  #try-it-out .editor--pre,
+  #try-it-out .editor--code {
+    font-size: .75em !important;
+    padding: .25rem .5rem !important;
+  }*/
+
+
+</style>
 
 <body>
-  <header>
-    <h1>Paint API</h1>  
+<!--  <nav>
+    <ul>
+      <li><a href="/">Houdini</a></li>
+      <li><a href="/custom-properties">Custom Properties</a></li>
+      <li><a href="/paint">Paint API</a></li>
+      <li><a href="/animation">Animation API</a></li>
+      <li><a href="/layout">Layout API</a></li>
+      <li><a href="/more">More</a></li>
+      <li><a href="http://ishoudinireadyyet.com/">Is Houdini Ready?</a></li>
+    </ul>
+  </nav> -->
+  <header class="paint-api">
+    <h1 class="paint-api--text">Paint API</h1>  
   </header>
-  
+  <main>
+    <article>
+      <p>The <a href="https://drafts.css-houdini.org/css-paint-api/">CSS Painting API Level 1</a>, also known as the Houdini <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span>, gives us a new option for places where we would use images in CSS: backgrounds, masks, and the like. With the new <code>paint()</code> function, and a <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> <a href="/worklets">worklet</a>, we can:</p>
+      <ul>
+        <li>Use a 2D Canvas-like drawing context to draw</li>
+        <li>Scale our drawn image based on the size of the element (and redraw too)</li>
+        <li>Style our drawing using <a href="/custom-properties">Custom Properties</a></li>
+      </ul>
+      <section class="try-it-out">
+        <div class="try-it-out--explain">
+          <h3>Try it out!</h3>
+          <p>The brush strokes you're seeing are background images drawn using the <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span>! Change the color by changing the value of <code>--brush-color</code>, and see the styling instantly update!</p>
+        </div>
+      <div class="editor try-it-out--code" data-language="css">.paint-api {
+  --brush-color: #784ca5;
+  background-image: paint(brushstroke);
+}</div>
+    </section>
+      <p>Taken together, we have a powerful new tool in our toolbelt to express ourselves</p>  
+    </article>
+    <article>
+      <h2><span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> Worklet</h2>
+      <div class="editor registered-demo-container--css" data-language="js">// From https://drafts.css-houdini.org/css-paint-api/ January 28, 2018 Editor's Draft
+
+class myPaint {
+  // Custom properties from element's style to look for
+  static get inputProperties() { return ['--foo']; }
+  // Input arguments that can be passed to the `paint` function
+  static get inputArguments() { return ['<color>']; }
+  // Whether Alpha is allowed?
+  static get alpha() { return true; }
+
+  paint(ctx, size, props, args) {
+    // ctx - drawing context
+    // size - size of the box being painted
+    // props - inputProperties
+    // args - array of passed-in arguments
+
+    // Paint code goes here.
+  }
+}</div>
+    </article>
+
+
+  </main>
 </body>
 </html>
