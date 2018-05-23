@@ -5,14 +5,17 @@
   <title>Paint with Houdini</title>
 </head>
 <script type="text/javascript">
-  window.CSS.registerProperty({
-    name: '--header-stroke-color',
-    syntax: '<color>',
-    inherits: false,
-    initialValue: 'purple',
-  });
+  if (CSS.registerProperty) {
+    window.CSS.registerProperty({
+      name: '--header-stroke-color',
+      syntax: '<color>',
+      inherits: false,
+      initialValue: 'purple',
+    });  
+  }
+  
 
-  window.CSS.paintWorklet.addModule('paint/brushstroke.js');
+  CSS.paintWorklet.addModule('paint/brushstroke.js');
 </script>
 <style type="text/css">
   h1 {
