@@ -4,9 +4,9 @@
   <meta charset="UTF-8">
   <title>Paint with Houdini</title>
 </head>
-<script type="text/javascript" src="/shared/editor.js"></script>
-<link rel="stylesheet" type="text/css" href="/shared/editor.css">
-<script type="text/javascript">
+<script type="module">
+  import Editor from '/shared/editor.js';
+
   if (CSS.registerProperty) {
     window.CSS.registerProperty({
       name: '--brush-color',
@@ -171,8 +171,9 @@
     </article>
     <article>
       <h2><span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> Worklet</h2>
-      <div class="editor registered-demo-container--css" data-language="js">// From https://drafts.css-houdini.org/css-paint-api/ January 28, 2018 Editor's Draft
-
+      <pre><code class="language-js">
+// From https://drafts.css-houdini.org/css-paint-api/ January 28, 2018 Editor's Draft
+      
 class myPaint {
   // Custom properties from element's style to look for
   static get inputProperties() { return ['--foo']; }
@@ -189,7 +190,8 @@ class myPaint {
 
     // Paint code goes here.
   }
-}</div>
+}
+</code></pre>
     </article>
 
 

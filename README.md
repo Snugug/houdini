@@ -11,6 +11,8 @@ Find out more [about Glitch](https://glitch.com/about).
 Your Project
 ------------
 
+Need [Experimental Web Platform Features](chrome://flags/#enable-experimental-web-platform-features)
+
 ### ← README.md
 
 That's this file, where you can tell people what your cool website does and how you built it.
