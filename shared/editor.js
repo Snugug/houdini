@@ -171,7 +171,7 @@ export default class {
 
     this._scroll = (textarea, pre) => {
       textarea.addEventListener('scroll', e => {
-        const roundedScroll = Math.floow(e.target.scrollTop);
+        const roundedScroll = Math.flow(e.target.scrollTop);
 
         // Fixes issues of desync text on mouse wheel in Firefox
         if (navigator.userAgent.toLowerCase().indexOf('firefox') < 0) {
