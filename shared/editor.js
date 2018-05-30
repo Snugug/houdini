@@ -26,7 +26,8 @@ export default class {
       const textarea = document.createElement('textarea');
       const pre = document.createElement('pre');
       const code = document.createElement('code');
-      const live = document.createElement('style');
+      const liveCSS = document.createElement('style');
+      const liveHTML = document.createElement('div');
 
       const language = target.dataset.language || opts.language || 'markup';
 
@@ -45,7 +46,10 @@ export default class {
       textarea.classList.add('editor--textarea');
       pre.classList.add('editor--pre');
       code.classList.add('editor--code', `language-${language}`);
-      live.classList.add('editor--live');
+      liveCSS.classList.add('editor--live');
+      liveHTML.classList.add('editor--live');
+      liveHTML.setAttribute('markup', true);
+
 
       // Fix iOS "drunk-text" issue
       if (/iPad|iPhone|iPod/.test(navigator.platform)) {
@@ -76,8 +80,11 @@ export default class {
       const rendered = this._render(code, textarea);
 
       if (opts.live && language.match(/css/)) {
-        target.appendChild(live);
-        live.innerText = rendered;
+        target.appendChild(liveCSS);
+        liveCSS.innerText = rendered;
+      } else if (opts.live && language.match(/markup/)) {
+        target.appendChild(liveHTML);
+        liveHTML.innerHTML = rendered;
       }
 
       this._input(target);
@@ -100,7 +107,11 @@ export default class {
         const rendered = this._render(code, textarea);
 
         if (live) {
-          live.innerText = rendered;
+          if (live.hasAttribute('markup')) {
+            live.innerHTML = input.value;
+          } else {
+            live.innerText = rendered;
+          }
         }
       });
 
