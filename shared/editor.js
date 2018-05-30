@@ -45,7 +45,7 @@ export default class {
       target.classList.add('editor');
       textarea.classList.add('editor--textarea');
       pre.classList.add('editor--pre');
-      code.classList.add('editor--code', `language-${language}`);
+      code.classList.add('editor--code', `language-${lang}`);
       liveCSS.classList.add('editor--live');
       liveHTML.classList.add('editor--live');
       liveHTML.setAttribute('markup', true);
@@ -194,7 +194,7 @@ export default class {
       if(lang.match(/html|xml|xhtml|svg/)) {
         return 'markup';
       }
-      else if(lang.match(/js/)) {
+      else if(lang.match(/js|worklet/)) {
         return 'javascript';
       }
       else {
