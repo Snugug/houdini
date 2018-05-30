@@ -99,6 +99,13 @@ export default class {
       const code = target.querySelector('.editor--code');
       const live = target.querySelector('.editor--live');
 
+      // Scroll Sync
+      textarea.addEventListener('scroll', e => {
+        window.requestAnimationFrame(() => {
+          pre.scrollTop = e.target.scrollTop;
+        });
+      });
+
       // Input Event Listener
       textarea.addEventListener('input', e => {
         const input = e.target;
