@@ -6,6 +6,7 @@
 </head>
 <script type="module">
   import Editor from '/shared/editor.js';
+  import REPL from '/shared/repl.js'
 
   if (CSS.registerProperty) {
     window.CSS.registerProperty({
@@ -13,7 +14,7 @@
       syntax: '<color>',
       inherits: true,
       initialValue: '#784ca5',
-    });  
+    });
   }
   CSS.paintWorklet.addModule('/paint/brushstroke.js');
 
@@ -22,7 +23,80 @@
     editor.run('.editor', {
       live: true,
     });
-    console.log(editor);
+
+    const repl = new REPL('#repl', {
+      circle: {
+        name: 'Circle',
+        features: [
+          'properties',
+        ],
+        worklet: `registerPaint('circle', class {
+  static get inputProperties() { return ['--circle-color']; }
+  paint(ctx, size, properties) {
+    // Get fill color from property
+    const color = properties.get('--circle-color');
+
+    // Determine the center point and radius.
+    const xCircle = size.width / 2;
+    const yCircle = size.height / 2;
+    const radiusCircle = Math.min(xCircle, yCircle) - 2.5;
+
+    // Draw the circle \o/
+    ctx.beginPath();
+    ctx.arc(xCircle, yCircle, radiusCircle, 0, 2 * Math.PI);
+    ctx.fillStyle = color;
+    ctx.fill();
+  }
+});`,
+        js: `window.CSS.registerProperty({
+  name: '--circle-color',
+  syntax: '<color>',
+  inherits: true,
+  initialValue: 'red',
+});`,
+        css: `.circle {
+  --circle-color: green;
+  background-image: paint(circle);
+  height: 25vh;
+  width: 100%;
+}`,
+        html: `<div class="circle"></div>`,
+
+      },
+      face: {
+        name: 'Face',
+        features: [
+          'properties',
+          'arguments',
+        ],
+        worklet: ``,
+        js: ``,
+        css: ``,
+        html: ``,
+      },
+      warning: {
+        name: 'Warning Sign',
+        features: [
+          'properties',
+          'complex',
+        ],
+        worklet: ``,
+        js: ``,
+        css: ``,
+        html: ``,
+      },
+      animation: {
+        name: 'Ripple Effect',
+        features: [
+          'properties',
+          'animation',
+        ],
+        worklet: ``,
+        js: ``,
+        css: ``,
+        html: ``,
+      }
+    }, 'paint');
   });
 </script>
 
@@ -117,10 +191,10 @@
     padding: .5em .75em;
   }
 
-  @media (min-width: 66em) { 
+  @media (min-width: 66em) {
     .try-it-out {
       width: 70ch;
-      margin-left: 10ch;  
+      margin-left: 10ch;
     }
   }
 
@@ -171,6 +245,9 @@
     </article>
     <article>
       <h2 id="worklet"><span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> Worklet</h2>
+      <p><strong>Register Worklet from Main JavaScript</strong></p>
+      <pre><code class="language-js">await CSS.paintWorklet.addModule('path/to/paint-worklet.js');</code></pre>
+      <p><strong>Worklet Overview</strong></p>
       <pre><code class="language-js">
 // From https://drafts.css-houdini.org/css-paint-api/ Apirl 18, 2018 Editor's Draft
 
@@ -190,11 +267,18 @@ registerPaint('sample-paint', class {
 
     // Paint code goes here.
   }
-}
+});
 </code></pre>
+      <p>A <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> <a href="/worklets">worklet</a> can read in input properties on the element it's attached to (either <a href="/custom-properties">custom properties</a> or standard properties), it can be passed arguments with <a href="https://www.w3.org/TR/css3-values/">CSS Value</a> types for each argument, and options for the context can be set (like if Alpha is allowed)</p>
     </article>
 
+    <article>
+      <h2 id="live-demo">Play with the <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span></h2>
 
+      <p>Each one of these examples are fully editable, and you'll see the changes live! You've got Worklet, JavaScript, CSS, and HTML areas to play with. All changes will update as you type! Worklets will be automagically added for you, so only write the JavaScript you'd like to run in browser after the worklet is loaded.</p>
+      <p>You're preloaded with the first demo, hit the buttons for the other demos to have the code updated and run. The <code>save</code> button will give you a link so you can come back to the code you've been working on and keep going!</p>
+    </article>
   </main>
+  <div id="repl"></div>
 </body>
 </html>
