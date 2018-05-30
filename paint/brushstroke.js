@@ -8,14 +8,9 @@ registerPaint('brushstroke', class {
   paint(ctx, size, props) {
     const color = props.get('--brush-color');
 
-    console.log(color);
-    console.log(size);
-
     // Width and Height multiples
     const x = size.width / 996.6;
     const y = size.height / 296.7;
-
-    console.log(x, y);
 
     ctx.beginPath();
 
