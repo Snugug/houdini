@@ -172,15 +172,15 @@
     <article>
       <h2><span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> Worklet</h2>
       <pre><code class="language-js">
-// From https://drafts.css-houdini.org/css-paint-api/ January 28, 2018 Editor's Draft
-      
-class myPaint {
+// From https://drafts.css-houdini.org/css-paint-api/ Apirl 18, 2018 Editor's Draft
+
+registerPaint('sample-paint', class {
   // Custom properties from element's style to look for
   static get inputProperties() { return ['--foo']; }
   // Input arguments that can be passed to the `paint` function
-  static get inputArguments() { return ['<color>']; }
+  static get inputArguments() { return ['&lt;color&gt;']; }
   // Whether Alpha is allowed?
-  static get alpha() { return true; }
+  static get contextOptions() { return {alpha: true}; }
 
   paint(ctx, size, props, args) {
     // ctx - drawing context
