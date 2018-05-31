@@ -88,7 +88,6 @@ export default class {
       }
 
       this._input(target);
-      this._scroll(textarea, pre);
 
       return target;
     }
