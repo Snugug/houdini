@@ -48,7 +48,7 @@
     ctx.fill();
   }
 });`,
-        js: `window.CSS.registerProperty({
+        js: `CSS.registerProperty({
   name: '--circle-color',
   syntax: '<color>',
   inherits: true,
@@ -69,10 +69,79 @@
           'properties',
           'arguments',
         ],
-        worklet: ``,
-        js: ``,
-        css: ``,
-        html: ``,
+        worklet: `registerPaint('face', class {
+    static get inputProperties() { return ['--head-color', '--face-color']; }
+    static get inputArguments() { return ['*']; }
+    paint(ctx, geom, properties, args) {
+      // Change the fill color.
+      const circle = properties.get('--head-color');
+      const face = properties.get('--face-color').length ? properties.get('--face-color') : args[0];
+
+      // Determine the center point and radius.
+      const xCircle = geom.width / 2;
+      const yCircle = geom.height / 2;
+      const radiusCircle = Math.min(xCircle, yCircle) - 2.5;
+
+      const xFace = geom.width / 20;
+      const yFace = geom.height / 20;
+      const radiusFace = Math.min(xFace, yFace);
+
+      // Draw the circle \o/
+      ctx.beginPath();
+      ctx.arc(xCircle, yCircle, radiusCircle, 0, 2 * Math.PI);
+      ctx.fillStyle = circle;
+      ctx.fill();
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = face;
+      ctx.stroke();
+
+      // Draw the eyes
+      ctx.beginPath();
+      const eyeY = yCircle - yFace * 2;
+
+      let eyeX = xCircle - xFace;
+      if (eyeX < xCircle - radiusCircle / 2) {
+        eyeX = xCircle - radiusCircle / 2;
+      }
+      ctx.arc(eyeX, eyeY, radiusFace, 0, 2 * Math.PI);
+
+      eyeX += xFace * 2;
+      if (eyeX > xCircle + radiusCircle / 2) {
+        eyeX = xCircle + radiusCircle / 2;
+      }
+
+      ctx.arc(eyeX, eyeY, radiusFace, 0, 2 * Math.PI);
+      ctx.fillStyle = face;
+      ctx.fill();
+
+      // draw the mouth
+      ctx.beginPath();
+      ctx.arc(xCircle, yCircle, radiusCircle / 2, 0, Math.PI, false);
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = face;
+      ctx.stroke();
+    }
+});`,
+        js: `CSS.registerProperty({
+  name: '--head-color',
+  syntax: '<color>',
+  inherits: true,
+  initialValue: 'purple',
+});
+
+CSS.registerProperty({
+  name: '--face-color',
+  syntax: '<color>',
+  inherits: true,
+  initialValue: 'green',
+});`,
+        css: `.face {
+  --head-color: blue;
+  background-image: paint(face, orange);
+  height: 50vh;
+  width: 50vw;
+}`,
+        html: `<textarea class="face"></textarea>`,
       },
       warning: {
         name: 'Warning Sign',
@@ -80,10 +149,108 @@
           'properties',
           'complex',
         ],
-        worklet: ``,
-        js: ``,
-        css: ``,
-        html: ``,
+        worklet: `// Warning example from http://www.williammalone.com/articles/html5-canvas-example/
+
+registerPaint('warning', class {
+    static get inputProperties() { return ['--warning-color']; }
+    paint(ctx, geom, props) {
+      let color = props.get('--warning-color').length ? props.get('--warning-color') : '#ffc821';
+      const ratio = 125 / 105;
+      const height = geom.height - 10;
+      const width = ratio * height;
+      const padding = 5;
+      const lineWidth = 8;
+      const innerBorder = 5;
+
+      // Gradient Background
+      const gradient = ctx.createLinearGradient(0, 0, 0, height);
+      gradient.addColorStop(0, color);
+      gradient.addColorStop(1, color);
+
+      // Warning Sign Reflection
+      const reflection = ctx.createLinearGradient(0, padding, 0, padding + height);
+      reflection.addColorStop(0, 'transparent');
+      reflection.addColorStop(.5, 'transparent');
+      reflection.addColorStop(.5, 'rgba(0, 0, 0, .05');
+      reflection.addColorStop(1, 'rgba(255, 255, 255, .5)');
+
+      // console.log(geom);
+
+      ctx.beginPath();
+      ctx.moveTo(geom.width / 2 + padding / 2, padding * 2); // Top Corner
+      ctx.lineTo(geom.width / 2 + (width / 2), height + padding / 2); // Bottom Right Corner
+      ctx.lineTo(geom.width / 2 - (width / 2), height + padding / 2); // Bottom Left
+      ctx.closePath();
+
+      // Add Shadow
+      ctx.shadowBlur = 10;
+      ctx.shadowColor = 'black';
+      // Stroke the outer outline
+      ctx.lineWidth = lineWidth * 2;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = color;
+      ctx.stroke();
+
+      // Turn off the shadow
+      ctx.shadowColor = 'transparent';
+
+      // Fill with gradient
+      ctx.fillStyle = color;
+      ctx.fill();
+
+      // Add reflection
+      ctx.fillStyle = reflection;
+      ctx.fill();
+
+      // Stroke inner outline
+      ctx.lineWidth = lineWidth;
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = '#333',
+      ctx.stroke();
+
+      // Draw the text exclamation
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.font = 'bold 60px serif';
+      ctx.fillStyle = '#333';
+
+      // !!!
+      const radius = 10;
+      const startAngle = 1.1 * Math.PI;
+      const endAngle = 1.9 * Math.PI;
+      ctx.beginPath();
+      ctx.arc(geom.width / 2, height / 2 - padding, radius, startAngle, endAngle, false);
+      ctx.lineWidth = 15;
+      ctx.lineTo(geom.width / 2, height / 2 + 40 - padding);
+      ctx.lineTo(geom.width / 2 - 9, height / 2 - 5 - padding);
+      ctx.lineTo(geom.width / 2 + 10, height / 2 + 5 - padding);
+      ctx.strokeStyle = 'black';
+      ctx.lineJoin = 'round';
+      ctx.stroke();
+      ctx.closePath();
+
+      // console.log(ctx);
+
+      ctx.beginPath();
+      ctx.arc(geom.width / 2, height / 2 + 62.5 - padding, 10, 0, 2 * Math.PI);
+      ctx.fillStyle = 'black';
+      ctx.fill();
+      // ctx.fillText('!', padding + width / 2, padding + height / 1.5);
+    }
+});`,
+        js: `CSS.registerProperty({
+  name: '--warning-color',
+  syntax: '<color>',
+  inherits: true,
+  initialValue: '#ffc821',
+});`,
+        css: `.warning {
+  --warning-color: red;
+  background: paint(warning);
+  height: 100vh;
+  width: 100vw;
+}`,
+        html: `<div class="warning"></div>`,
       },
       animation: {
         name: 'Ripple Effect',
