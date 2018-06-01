@@ -58,7 +58,7 @@ export default class {
   constructor(target, options, type) {
     options.custom = {
       name: 'Custom Worklet',
-      features: [],
+      features: ['custom'],
       worklet: ``,
       js: ``,
       css: ``,
@@ -185,6 +185,14 @@ export default class {
       const switchType = target.getAttribute('data-type');
 
       resetEditors(switchType);
+
+      if (switchType === 'custom') {
+        replTitle.contentEditable = true;
+        replFeatures.contentEditable = true;
+      } else {
+        replTitle.contentEditable = false;
+        replFeatures.contentEditable = false;
+      }
     }
 
 
