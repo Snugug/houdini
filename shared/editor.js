@@ -3,7 +3,7 @@ import '/shared/prism.js';
 const editorStyling = document.createElement('link');
 editorStyling.rel = 'stylesheet';
 editorStyling.type = 'text/css';
-editorStyling.href = '/shared/editor.css';
+editorStyling.href = '/shared/css/editor.css';
 document.head.appendChild(editorStyling);
 
 export default class {

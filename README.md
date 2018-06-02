@@ -37,3 +37,8 @@ Made by [Fog Creek](https://fogcreek.com/)
 -------------------
 
 \ ゜o゜)ノ
+
+---
+Acknowledgements
+
+http://blog.mikeswanson.com/ai2canvas

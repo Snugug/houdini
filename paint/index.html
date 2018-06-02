@@ -28,7 +28,8 @@
       circle: {
         name: 'Circle',
         features: [
-          'properties',
+          'basic',
+          'input properties',
         ],
         worklet: `registerPaint('circle', class {
   static get inputProperties() { return ['--circle-color']; }
@@ -66,8 +67,9 @@
       face: {
         name: 'Face',
         features: [
-          'properties',
-          'arguments',
+          'basic',
+          'input properties',
+          'input arguments',
         ],
         worklet: `registerPaint('face', class {
     static get inputProperties() { return ['--head-color', '--face-color']; }
@@ -146,8 +148,8 @@ CSS.registerProperty({
       'generative art': {
         name: 'Generative Art',
         features: [
-          'properties',
           'complex',
+          'input properties',
         ],
         worklet: `// Based on the amazing work by Tim Holman (@twholman)
 // https://www.youtube.com/watch?v=4Se0_w0ISYk&list=PLZriQCloF6GDuXF8RRPd1mIl9W2QXF-sQ&index=11
@@ -237,8 +239,10 @@ CSS.registerProperty({
       animation: {
         name: 'Ripple Effect',
         features: [
-          'properties',
+          'complex',
           'animation',
+          'input properties',
+          'user input',
         ],
         worklet: `/* Example from https://github.com/GoogleChromeLabs/houdini-samples/tree/master/paint-worklet/ripple */
 
@@ -350,6 +354,30 @@ button.addEventListener('click', evt => {
         html: `<button id="ripple">
   Click me!
 </button>`,
+      },
+      custom: {
+        name: 'Custom Worklet',
+        features: ['custom'],
+        worklet: `registerPaint('sample-paint', class {
+  // Custom properties from element's style to look for
+  static get inputProperties() { return ['--foo']; }
+  // Input arguments that can be passed to the \`paint\` function
+  static get inputArguments() { return ['<color>']; }
+  // Whether Alpha is allowed?
+  static get contextOptions() { return {alpha: true}; }
+
+  paint(ctx, size, props, args) {
+    // ctx - drawing context
+    // size - size of the box being painted
+    // props - inputProperties
+    // args - array of passed-in arguments
+
+    // Paint code goes here.
+  }
+});`,
+        js: ``,
+        css: ``,
+        html: ``,
       }
     }, 'paint');
   });
@@ -361,6 +389,7 @@ button.addEventListener('click', evt => {
   :root {
     --grey: #f9f9f9;
     --brush-color: #784ca5;
+    --border-color: var(--brush-color);
   }
 
   *, *:before, *:after {
@@ -535,5 +564,8 @@ registerPaint('sample-paint', class {
     </article>
   </main>
   <div id="repl"></div>
+  <footer>
+    <p>This is my footer</p>
+  </footer>
 </body>
 </html>

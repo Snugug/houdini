@@ -3,7 +3,7 @@ import Editor from '/shared/editor.js';
 const replStyling = document.createElement('link');
 replStyling.rel = 'stylesheet';
 replStyling.type = 'text/css';
-replStyling.href = '/shared/repl.css';
+replStyling.href = '/shared/css/repl.css';
 document.head.appendChild(replStyling);
 
 const replSwitcherWorklet = `registerPaint('replswitcher', class {
@@ -56,14 +56,6 @@ CSS.paintWorklet.addModule(URL.createObjectURL(workletBlob)).catch(e => {
 
 export default class {
   constructor(target, options, type) {
-    options.custom = {
-      name: 'Custom Worklet',
-      features: ['custom'],
-      worklet: ``,
-      js: ``,
-      css: ``,
-      html: ``,
-    };
     const optkey = Object.keys(options);
 
     let key = '';
@@ -72,7 +64,6 @@ export default class {
     // Set up REPL and runner divs
     const menu = document.createElement('div');
 
-    const replContainer = document.createElement('div');
     const replSwitcher = document.createElement('select');
     const replTitle = document.createElement('h4');
     const replFeatures = document.createElement('p');
@@ -84,8 +75,7 @@ export default class {
 
     let previousPreview = '';
 
-
-    replContainer.classList.add('repl--container');
+    menu.classList.add('repl--menu');
     replTitle.classList.add('repl--title');
     replFeatures.classList.add('repl--features');
     replSwitcher.classList.add('repl--switcher');
@@ -118,20 +108,19 @@ export default class {
       replSwitcher.appendChild(so);
     }
 
-    replSwitcher.addEventListener('change', swapEditors)
+    replSwitcher.addEventListener('input', swapEditors)
 
     const parent = document.querySelector(target);
 
     parent.classList.add('repl');
     parent.appendChild(menu);
-    parent.appendChild(replContainer);
-    replContainer.appendChild(replTitle);
-    replContainer.appendChild(replFeatures);
-    replContainer.appendChild(replSwitcher);
-    replContainer.appendChild(workletEditor);
-    replContainer.appendChild(jsEditor);
-    replContainer.appendChild(cssEditor);
-    replContainer.appendChild(htmlEditor);
+    parent.appendChild(replTitle);
+    parent.appendChild(replFeatures);
+    parent.appendChild(replSwitcher);
+    parent.appendChild(workletEditor);
+    parent.appendChild(jsEditor);
+    parent.appendChild(cssEditor);
+    parent.appendChild(htmlEditor);
 
     // Set up the editors
     const editor = new Editor;
@@ -193,6 +182,9 @@ export default class {
         replTitle.contentEditable = false;
         replFeatures.contentEditable = false;
       }
+
+      replSwitcher.value = 'worklet';
+      replSwitcher.dispatchEvent(inputEvent);
     }
 
 

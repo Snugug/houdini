@@ -1,0 +1,106 @@
+.repl {
+  display: grid;
+  grid-column: 1 / span 1;
+  grid-gap: 0;
+  grid-row: 2 / span 1;
+  grid-template-columns: 1fr 8rem;
+  grid-template-rows: auto auto auto 300px;
+  position: relative;
+  border: 3px dashed var(--border-color);
+  width: calc(100vw - 2rem);
+  padding: .5em 1em;
+  margin: 0 1rem;
+  border-radius: 5px; }
+  @media (min-width: 735px) {
+    .repl {
+      grid-template-columns: 1fr 1fr 8rem;
+      grid-template-rows: auto auto auto 500px;
+      grid-column-gap: 1em; } }
+  .repl--menu {
+    grid-column: 1 / span 1;
+    grid-row: 3 / span 1;
+    margin-left: -.25em;
+    display: flex;
+    flex-wrap: wrap;
+    padding-top: 1em; }
+    @media (min-width: 735px) {
+      .repl--menu {
+        grid-column: 1 / span 2; } }
+  .repl--menu-item {
+    font-size: 1em;
+    background: transparent;
+    margin: .125em .25em;
+    flex-grow: 1;
+    border: 1px solid var(--border-color);
+    outline: .25em solid transparent;
+    transition: outline .25s ease-in-out, border .25s ease-in-out; }
+    .repl--menu-item:hover, .repl--menu-item:focus {
+      border: 1px solid transparent;
+      outline: 2px double var(--border-color);
+      cursor: pointer; }
+  .repl--title {
+    grid-column: 1 / span 1;
+    grid-row: 1 / span 1;
+    margin: 0;
+    padding: 0;
+    padding-top: .5rem;
+    line-height: 1.1;
+    font-size: 1.5em;
+    font-weight: bolder;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
+    @media (min-width: 735px) {
+      .repl--title {
+        grid-column: 1 / span 2; } }
+  .repl--features {
+    grid-column: 1 / span 1;
+    grid-row: 2 / span 1;
+    margin: 0;
+    padding: 0;
+    font-size: .8em;
+    font-style: italic;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"; }
+    @media (min-width: 735px) {
+      .repl--features {
+        grid-column: 1 / span 2; } }
+  .repl--switcher {
+    --switcher-bkg: #272822;
+    -webkit-appearance: unset;
+    align-self: end;
+    background-image: paint(replswitcher);
+    border-radius: 5px 5px 0 0;
+    border: 0;
+    bottom: -.7rem;
+    color: #f8f8f2;
+    font-family: 'IBM Plex Mono', Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace !important;
+    font-size: 1em;
+    grid-column: 2 / span 1;
+    grid-row: 2 / span 2;
+    height: 2rem;
+    line-height: 1.618;
+    padding: .25em .5em;
+    padding-left: 1.5em;
+    padding-right: 2em;
+    position: absolute;
+    right: 0;
+    text-shadow: 0 1px rgba(0, 0, 0, 0.3);
+    width: 8rem; }
+    @media (min-width: 735px) {
+      .repl--switcher {
+        grid-column: 3 / span 1; } }
+  .repl--editor {
+    grid-column: 1 / span 2;
+    grid-row: 4 / span 1; }
+    @media (min-width: 735px) {
+      .repl--editor {
+        grid-column: 2 / span 2; } }
+  .repl--preview {
+    grid-column: 1 / span 2;
+    height: 300px;
+    width: 100%;
+    margin-top: 1em; }
+    @media (min-width: 735px) {
+      .repl--preview {
+        grid-column: 1 / span 1;
+        grid-row: 4 / span 1;
+        margin-top: .7rem;
+        height: calc(500px - .7rem); } }
