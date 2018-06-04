@@ -14,11 +14,10 @@
   grid-template-columns: 1fr 8rem;
   grid-template-rows: auto auto auto 300px;
   position: relative;
-  border: 3px dashed var(--border-color);
+  border: 3px dashed var(--prime-color);
   width: calc(100vw - 2rem);
   padding: .5em 1em;
   margin: 0 1rem;
-  border-radius: 5px;
 
   @include mq($half) {
     grid-template-columns: 1fr 1fr 8rem;
@@ -45,14 +44,14 @@
     background: transparent;
     margin: .125em .25em;
     flex-grow: 1;
-    border: 1px solid var(--border-color);
+    border: 1px solid var(--prime-color);
     outline: .25em solid transparent;
     transition: outline .25s ease-in-out, border .25s ease-in-out;
 
     &:hover,
     &:focus {
       border: 1px solid transparent;
-      outline: 2px double var(--border-color);
+      outline: 2px double var(--prime-color);
       cursor: pointer;
     }
   }
@@ -91,6 +90,7 @@
     --switcher-bkg: #272822;
     -webkit-appearance: unset;
     align-self: end;
+    background-color: transparent;
     background-image: paint(replswitcher);
     border-radius: 5px 5px 0 0;
     border: 0;

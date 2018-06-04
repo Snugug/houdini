@@ -13,6 +13,7 @@ const replSwitcherWorklet = `registerPaint('replswitcher', class {
       'color',
     ];
   }
+
   paint(ctx, size, props) {
     const bkg = props.get('--switcher-bkg');
     const color = props.get('color');
