@@ -220,17 +220,28 @@ CSS.registerProperty({
     worklet: `/* Example from https://github.com/GoogleChromeLabs/houdini-samples/tree/master/paint-worklet/ripple */
 
 registerPaint('ripple', class {
-    static get inputProperties() { return ['background-color', '--ripple-color', '--animation-tick', '--ripple-x', '--ripple-y']; }
+    static get inputProperties() {
+      return [
+        'background-color',
+        '--ripple-color',
+        '--animation-tick',
+        '--ripple-x',
+        '--ripple-y'
+      ];
+    }
+
     paint(ctx, geom, properties) {
-      const bgColor = properties.get('background-color').toString();
-      const rippleColor = properties.get('--ripple-color').toString();
-      const x = parseFloat(properties.get('--ripple-x').toString());
-      const y = parseFloat(properties.get('--ripple-y').toString());
-      let tick = parseFloat(properties.get('--animation-tick').toString());
-      if(tick < 0)
+      const bgColor = properties.get('background-color');
+      const rippleColor = properties.get('--ripple-color');
+      const x = properties.get('--ripple-x');
+      const y = properties.get('--ripple-y');
+      let tick = properties.get('--animation-tick');
+
+      if (tick < 0) {
         tick = 0;
-      if(tick > 1000)
+      } else if (tick > 1000) {
         tick = 1000;
+      }
 
       ctx.fillStyle = bgColor;
       ctx.fillRect(0, 0, geom.width, geom.height);
