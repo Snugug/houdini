@@ -1,0 +1,67 @@
+:root {
+  font-family: 'IBM Plex Sans', sans-serif;
+  --grey: #f9f9f9; }
+
+*,
+*:before,
+*:after {
+  box-sizing: border-box; }
+
+body {
+  background-color: #f9f9f9;
+  padding: 0;
+  margin: 0; }
+
+h1 {
+  font-size: calc(2em + 7vh);
+  padding: .25rem; }
+
+h2, h3, h4 {
+  line-height: 1;
+  padding: 0;
+  margin: 0; }
+
+header {
+  height: 25vh;
+  min-height: 5em;
+  width: 100vw;
+  /*padding: .5em;*/ }
+
+main {
+  font-size: 1.25em;
+  line-height: 1.25;
+  margin: 0 auto;
+  max-width: 80ch;
+  padding: 1em 2em; }
+
+code {
+  font-family: 'IBM Plex Mono', monospace; }
+
+nav {
+  background: linear-gradient(to bottom, white, #f9f9f9); }
+
+nav ul {
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+
+a {
+  background: var(--prime-color);
+  color: var(--grey);
+  padding: 0 .5em;
+  border-radius: 1em .25em 1em .25em;
+  font-style: italic;
+  transition: padding .15s ease-in-out; }
+  a:hover, a:focus {
+    padding: 0 .75em; }
+
+.try-it-out {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  grid-gap: 1em;
+  border: 3px dashed var(--brush-color);
+  padding: .5em .75em; }
+  @media (min-width: 66em) {
+    .try-it-out {
+      width: 70ch;
+      margin-left: 10ch; } }

@@ -3,421 +3,40 @@
 <head>
   <meta charset="UTF-8">
   <title>Paint with Houdini</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i|Finger+Paint&text=PAINT" rel="stylesheet">
+  <link rel="stylesheet" href="/shared/css/style.css">
+
+  <script type="module">
+    import Editor from '/shared/editor.js';
+    import REPL from '/shared/repl.js'
+    import settings from '/paint/settings.js';
+
+    if (CSS.registerProperty) {
+      window.CSS.registerProperty({
+        name: '--brush-color',
+        syntax: '<color>',
+        inherits: true,
+        initialValue: '#784ca5',
+      });
+    }
+    CSS.paintWorklet.addModule('/paint/brushstroke.js');
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const editor = new Editor;
+      editor.run('.editor', {
+        live: true,
+      });
+
+      const repl = new REPL('#repl', settings, 'paint');
+    });
+  </script>
 </head>
-<script type="module">
-  import Editor from '/shared/editor.js';
-  import REPL from '/shared/repl.js'
-
-  if (CSS.registerProperty) {
-    window.CSS.registerProperty({
-      name: '--brush-color',
-      syntax: '<color>',
-      inherits: true,
-      initialValue: '#784ca5',
-    });
-  }
-  CSS.paintWorklet.addModule('/paint/brushstroke.js');
-
-  window.addEventListener('DOMContentLoaded', () => {
-    const editor = new Editor;
-    editor.run('.editor', {
-      live: true,
-    });
-
-    const repl = new REPL('#repl', {
-      circle: {
-        name: 'Circle',
-        features: [
-          'basic',
-          'input properties',
-        ],
-        worklet: `registerPaint('circle', class {
-  static get inputProperties() { return ['--circle-color']; }
-  paint(ctx, size, properties) {
-    // Get fill color from property
-    const color = properties.get('--circle-color');
-
-    // Determine the center point and radius.
-    const xCircle = size.width / 2;
-    const yCircle = size.height / 2;
-    const radiusCircle = Math.min(xCircle, yCircle) - 2.5;
-
-    // Draw the circle \o/
-    ctx.beginPath();
-    ctx.arc(xCircle, yCircle, radiusCircle, 0, 2 * Math.PI);
-    ctx.fillStyle = color;
-    ctx.fill();
-  }
-});`,
-        js: `CSS.registerProperty({
-  name: '--circle-color',
-  syntax: '<color>',
-  inherits: true,
-  initialValue: 'red',
-});`,
-        css: `.circle {
-  --circle-color: green;
-  background-image: paint(circle);
-  height: 80vh;
-  width: 100vw;
-}`,
-        html: `<div class="circle"></div>`,
-
-      },
-      face: {
-        name: 'Face',
-        features: [
-          'basic',
-          'input properties',
-          'input arguments',
-        ],
-        worklet: `registerPaint('face', class {
-    static get inputProperties() { return ['--head-color', '--face-color']; }
-    static get inputArguments() { return ['*']; }
-    paint(ctx, geom, properties, args) {
-      // Change the fill color.
-      const circle = properties.get('--head-color');
-      const face = properties.get('--face-color').length ? properties.get('--face-color') : args[0];
-
-      // Determine the center point and radius.
-      const xCircle = geom.width / 2;
-      const yCircle = geom.height / 2;
-      const radiusCircle = Math.min(xCircle, yCircle) - 2.5;
-
-      const xFace = geom.width / 20;
-      const yFace = geom.height / 20;
-      const radiusFace = Math.min(xFace, yFace);
-
-      // Draw the circle \o/
-      ctx.beginPath();
-      ctx.arc(xCircle, yCircle, radiusCircle, 0, 2 * Math.PI);
-      ctx.fillStyle = circle;
-      ctx.fill();
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = face;
-      ctx.stroke();
-
-      // Draw the eyes
-      ctx.beginPath();
-      const eyeY = yCircle - yFace * 2;
-
-      let eyeX = xCircle - xFace;
-      if (eyeX < xCircle - radiusCircle / 2) {
-        eyeX = xCircle - radiusCircle / 2;
-      }
-      ctx.arc(eyeX, eyeY, radiusFace, 0, 2 * Math.PI);
-
-      eyeX += xFace * 2;
-      if (eyeX > xCircle + radiusCircle / 2) {
-        eyeX = xCircle + radiusCircle / 2;
-      }
-
-      ctx.arc(eyeX, eyeY, radiusFace, 0, 2 * Math.PI);
-      ctx.fillStyle = face;
-      ctx.fill();
-
-      // draw the mouth
-      ctx.beginPath();
-      ctx.arc(xCircle, yCircle, radiusCircle / 2, 0, Math.PI, false);
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = face;
-      ctx.stroke();
-    }
-});`,
-        js: `CSS.registerProperty({
-  name: '--head-color',
-  syntax: '<color>',
-  inherits: true,
-  initialValue: 'purple',
-});
-
-CSS.registerProperty({
-  name: '--face-color',
-  syntax: '<color>',
-  inherits: true,
-  initialValue: 'green',
-});`,
-        css: `.face {
-  --head-color: blue;
-  background-image: paint(face, orange);
-  height: 50vh;
-  width: 50vw;
-}`,
-        html: `<textarea class="face"></textarea>`,
-      },
-      'generative art': {
-        name: 'Generative Art',
-        features: [
-          'complex',
-          'input properties',
-        ],
-        worklet: `// Based on the amazing work by Tim Holman (@twholman)
-// https://www.youtube.com/watch?v=4Se0_w0ISYk&list=PLZriQCloF6GDuXF8RRPd1mIl9W2QXF-sQ&index=11
-
-registerPaint('art', class {
-  static get inputProperties() {
-    return [
-      '--art-color',
-      '--art-steps',
-      '--art-alpha'
-    ];
-  }
-
-
-  draw(ctx, x, y, width, height) {
-    const leftToRight = Math.random() >= 0.5;
-
-    if( leftToRight ) {
-      ctx.moveTo(x, y);
-      ctx.lineTo(x + width, y + height);
-    } else {
-      ctx.moveTo(x + width, y);
-      ctx.lineTo(x, y + height);
-    }
-
-    ctx.stroke();
-  }
-
-  paint(ctx, size, props) {
-    const color = props.get('--art-color');
-    const step = props.get('--art-steps');
-    const alpha = props.get('--art-alpha');
-
-    ctx.globalAlpha = alpha;
-    ctx.strokeStyle = color;
-
-    for( let x = 0; x < size.width; x += step.value) {
-      for( let y = 0; y < size.width; y+= step.value) {
-        this.draw(ctx, x, y, step.value, step.value);
-      }
-    }
-  }
-});`,
-        js: `CSS.registerProperty({
-  name: '--art-color',
-  syntax: '<color>',
-  inherits: false,
-  initialValue: 'white',
-});
-
-CSS.registerProperty({
-  name: '--art-steps',
-  syntax: '<number>',
-  inherits: false,
-  initialValue: 40,
-});
-
-CSS.registerProperty({
-  name: '--art-alpha',
-  syntax: '<number>',
-  inherits: false,
-  initialValue: 1,
-});`,
-        css: `h1 {
-  --art-alpha: .05;
-  --art-color: rgba(255, 255, 255, .25);
-  /* Setting --art-steps below 40 will slow this to a crawl */
-  --art-steps: 50;
-  background-image: paint(art), linear-gradient(to right, blue, black);
-
-  align-items: flex-end;
-  box-sizing: border-box;
-  color: white;
-  display: flex;
-  flex-direction: row-reverse;
-  font-family: sans-serif;
-  font-size: 3em;
-  height: 80vh;
-  line-height: 1;
-  margin: 0;
-  padding: .25em .5em;
-  text-align: right;
-  text-shadow: 1px 1px black, -1px 1px black;
-}`,
-        html: `<h1><span>Hello World</span></h1>`,
-      },
-      animation: {
-        name: 'Ripple Effect',
-        features: [
-          'complex',
-          'animation',
-          'input properties',
-          'user input',
-        ],
-        worklet: `/* Example from https://github.com/GoogleChromeLabs/houdini-samples/tree/master/paint-worklet/ripple */
-
-registerPaint('ripple', class {
-    static get inputProperties() { return ['background-color', '--ripple-color', '--animation-tick', '--ripple-x', '--ripple-y']; }
-    paint(ctx, geom, properties) {
-      const bgColor = properties.get('background-color').toString();
-      const rippleColor = properties.get('--ripple-color').toString();
-      const x = parseFloat(properties.get('--ripple-x').toString());
-      const y = parseFloat(properties.get('--ripple-y').toString());
-      let tick = parseFloat(properties.get('--animation-tick').toString());
-      if(tick < 0)
-        tick = 0;
-      if(tick > 1000)
-        tick = 1000;
-
-      ctx.fillStyle = bgColor;
-      ctx.fillRect(0, 0, geom.width, geom.height);
-      ctx.fillRect(0, 0, geom.width, geom.height);
-
-      ctx.fillStyle = rippleColor;
-      ctx.globalAlpha = 1 - tick/1000;
-      ctx.arc(
-        x, y, // center
-        geom.width * tick/1000, // radius
-        0, // startAngle
-        2 * Math.PI //endAngle
-      );
-      ctx.fill();
-    }
-});
-
-/*
-Copyright 2016 Google, Inc. All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License");
-you may not use this file except in compliance with the License.
-You may obtain a copy of the License at
-    http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS,
-WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-See the License for the specific language governing permissions and
-limitations under the License.
-*/`,
-        js: `CSS.registerProperty({
-  name: '--ripple-color',
-  syntax: '<color>',
-  inherits: true,
-  initialValue: 'purple',
-});
-
-CSS.registerProperty({
-  name: '--ripple-y',
-  syntax: '<number>',
-  inherits: true,
-  initialValue: 0,
-});
-
-CSS.registerProperty({
-  name: '--ripple-x',
-  syntax: '<number>',
-  inherits: true,
-  initialValue: 0,
-});
-
-CSS.registerProperty({
-  name: '--animation-tick',
-  syntax: '<number>',
-  inherits: true,
-  initialValue: 0,
-});
-
-const button = document.querySelector('#ripple');
-button.addEventListener('click', evt => {
-  button.classList.add('animating');
-  const [x, y] = [evt.clientX, evt.clientY];
-  const start = performance.now();
-  requestAnimationFrame(function raf(now) {
-    const count = Math.floor(now - start);
-    button.style.cssText = \`--ripple-x: \${x}; --ripple-y: \${y}; --animation-tick: \${count};\`;
-    if(count > 1000) {
-      button.classList.remove('animating');
-      button.style.cssText = \`--animation-tick: 0\`;
-      return;
-    }
-    requestAnimationFrame(raf);
-  })
-})`,
-        css: `#ripple {
-  width: 300px;
-  height: 300px;
-  border-radius: 150px;
-  font-size: 5em;
-  background-color: rgb(255,64,129);
-  border: 0;
-  box-shadow: 0 1px 1.5px 0 rgba(0,0,0,.12),0 1px 1px 0 rgba(0,0,0,.24);
-  color: white;
-  --ripple-x: 0;
-  --ripple-y: 0;
-  --ripple-color: rgba(255,255,255,0.54);
-  --animation-tick: 0;
-}
-#ripple:focus {
-  outline: none;
-}
-#ripple.animating {
-  background-image: paint(ripple);
-}`,
-        html: `<button id="ripple">
-  Click me!
-</button>`,
-      },
-      custom: {
-        name: 'Custom Worklet',
-        features: ['custom'],
-        worklet: `registerPaint('sample-paint', class {
-  // Custom properties from element's style to look for
-  static get inputProperties() { return ['--foo']; }
-  // Input arguments that can be passed to the \`paint\` function
-  static get inputArguments() { return ['<color>']; }
-  // Whether Alpha is allowed?
-  static get contextOptions() { return {alpha: true}; }
-
-  paint(ctx, size, props, args) {
-    // ctx - drawing context
-    // size - size of the box being painted
-    // props - inputProperties
-    // args - array of passed-in arguments
-
-    // Paint code goes here.
-  }
-});`,
-        js: ``,
-        css: ``,
-        html: ``,
-      }
-    }, 'paint');
-  });
-</script>
-
-<link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i|Finger+Paint&text=PAINT" rel="stylesheet">
 
 <style type="text/css">
   :root {
-    --grey: #f9f9f9;
     --brush-color: #784ca5;
-    --border-color: var(--brush-color);
-  }
-
-  *, *:before, *:after {
-    box-sizing: border-box;
-  }
-
-  body {
-    background-color: var(--grey);
-    padding: 0;
-    margin: 0;
-  }
-
-  h1 {
-    font-size: calc(2em + 7vh);
-    padding: .25rem;
-  }
-
-  h2, h3, h4 {
-    line-height: 1;
-    padding: 0;
-    margin: 0;
-  }
-
-  header {
-    height: 25vh;
-    min-height: 5em;
-    width: 100vw;
-    /*padding: .5em;*/
+    --prime-color: var(--brush-color);
   }
 
   .paint-api {
@@ -443,53 +62,6 @@ button.addEventListener('click', evt => {
     text-transform: uppercase;
     transform: rotate(-3.5deg);
   }
-
-  main {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 1.25em;
-    line-height: 1.25;
-    margin: 0 auto;
-    max-width: 80ch;
-    padding: 1em 2em;
-  }
-
-  code {
-    font-family: 'IBM Plex Mono', monospace;
-  }
-
-  nav {
-    background: linear-gradient(to bottom, white, grey);
-  }
-
-  nav ul {
-    margin: 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  }
-
-  .try-it-out {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    grid-gap: 1em;
-    border: 3px dashed var(--brush-color);
-    padding: .5em .75em;
-  }
-
-  @media (min-width: 66em) {
-    .try-it-out {
-      width: 70ch;
-      margin-left: 10ch;
-    }
-  }
-
-/*  #try-it-out .editor--textarea,
-  #try-it-out .editor--pre,
-  #try-it-out .editor--code {
-    font-size: .75em !important;
-    padding: .25rem .5rem !important;
-  }*/
-
-
 </style>
 
 <body>
@@ -559,8 +131,11 @@ registerPaint('sample-paint', class {
     <article>
       <h2 id="live-demo">Play with the <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span></h2>
 
-      <p>Each one of these examples are fully editable, and you'll see the changes live! You've got Worklet, JavaScript, CSS, and HTML areas to play with. All changes will update as you type! Worklets will be automagically added for you, so only write the JavaScript you'd like to run in browser after the worklet is loaded.</p>
-      <p>You're preloaded with the first demo, hit the buttons for the other demos to have the code updated and run. The <code>save</code> button will give you a link so you can come back to the code you've been working on and keep going!</p>
+      <p>Now it's your turn! Below are four examples of the Paint API in action, each showcasing something a little different, for you to see and play with! The <strong>Circle</strong> example is fairly basic, showing how to use input properties and the size of the element to draw a basic circle. The <strong>Face</strong> example is a riff on the circle example, allowing for an input argument as well as input properties. The <strong>Generative Art</strong> example is based on the work of <a href="https://twitter.com/@twholman" target="_blank">Tim Holman</a> and built after seeing his <a href="https://www.youtube.com/watch?v=4Se0_w0ISYk&list=PLZriQCloF6GDuXF8RRPd1mIl9W2" target="_blank">JSConf AU</a> talk; it uses generative art techniques to build a random background pattern. Finally, the <strong>Animation</strong> example is a recreation of the <a href="https://googlechromelabs.github.io/houdini-samples/" target="_blank">Chrome Lab's Ripple Houdini sample</a> showing how you can manipulate a worklet with userland JavaScript by changing the values of an input property in order to produce an animation effect.</p>
+
+      <p>Each one of these examples are fully editable, and you'll see the changes live as you type! You can change the Worklet code, the userland JavaScript, the CSS, and the HTML. Worklets get added automagically, and the userland JavaScript runs after its loaded.</p>
+
+      <p>You're preloaded with the <strong>Circle</strong> example. Use the other buttons to switch examples. The <strong>Custom</strong> button will give you a blank <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> worklet scaffolding to start from for you to experiment from scratch!</p>
     </article>
   </main>
   <div id="repl"></div>
