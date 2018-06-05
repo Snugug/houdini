@@ -1,8 +1,11 @@
 $grey: #f9f9f9;
+$paint: #784ca5;
+$black: #272822;
 
 :root {
   font-family: 'IBM Plex Sans', sans-serif;
   --grey: #{$grey};
+  --paint-color: #{$paint};
 }
 
 *,
@@ -15,6 +18,8 @@ body {
   background-color: $grey;
   padding: 0;
   margin: 0;
+  color: $black;
+  line-height: 1.5;
 }
 
 h1 {
@@ -37,7 +42,7 @@ header {
 
 main {
   font-size: 1.25em;
-  line-height: 1.25;
+  line-height: 1.618;
   margin: 0 auto;
   max-width: 80ch;
   padding: 1em 2em;
@@ -57,17 +62,88 @@ nav ul {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
 }
 
-a {
-  background: var(--prime-color);
-  color: var(--grey);
-  padding: 0 .5em;
-  border-radius: 1em .25em 1em .25em;
-  font-style: italic;
-  transition: padding .15s ease-in-out;
+@mixin anchorStyle($bkg, $color) {
+  &::before {
+    border-color: $bkg;
+  }
+
+  &::after {
+    background: rgba($bkg, .7);
+  }
 
   &:hover,
   &:focus {
-    padding: 0 .75em;
+    --shadow-color: #{$bkg};
+    color: $color;
+  }
+}
+
+a {
+  --shadow-color: #{$grey};
+  font-style: italic;
+  // font-weight: bold;
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  color: $black;
+  outline: none;
+  vertical-align: bottom;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0 .20em;
+  font-size: 1em;
+  transition: color .5s, text-shadow .5s;
+  transition-delay: 0;
+  text-shadow: 1px 1px var(--shadow-color), -1px -1px var(--shadow-color), 1px -1px var(--shadow-color), -1px 1px var(--shadow-color);
+
+  &::before,
+  &::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    transition: transform .3s ease-out;
+    z-index: 0;
+  }
+
+  &::before {
+    border-top: 2px solid black;
+    background: transparent;
+    transition-delay: .2s;
+    transform: translateY(calc(88% - 2px)) scaleX(.85);
+    transition-duration: .2s;
+    z-index: -1;
+  }
+
+  &::after {
+    z-index: -1;
+    // background: rgba(black, .7);
+    transform: translateY(-100%);
+    border-radius: 0 0 3px 3px;
+  }
+
+  &:hover,
+  &:focus {
+    transition-delay: .25s;
+
+    &::before,
+    &::after {
+      transform: translateX(0) scaleX(1);
+    }
+
+    &::before {
+      transition-delay: .2s;
+    }
+
+    &::after {
+      transition-delay: .3s;
+    }
+  }
+
+  .paint & {
+    @include anchorStyle($paint, $grey);
   }
 }
 

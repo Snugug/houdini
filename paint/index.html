@@ -11,9 +11,10 @@
     import Editor from '/shared/editor.js';
     import REPL from '/shared/repl.js'
     import settings from '/paint/settings.js';
+    import '/shared/app.js';
 
     if (CSS.registerProperty) {
-      window.CSS.registerProperty({
+      CSS.registerProperty({
         name: '--brush-color',
         syntax: '<color>',
         inherits: true,
@@ -35,8 +36,7 @@
 
 <style type="text/css">
   :root {
-    --brush-color: #784ca5;
-    --prime-color: var(--brush-color);
+    --brush-color: var(--paint-color);
   }
 
   .paint-api {
@@ -64,7 +64,7 @@
   }
 </style>
 
-<body>
+<body class="paint">
 <!--  <nav>
     <ul>
       <li><a href="/">Houdini</a></li>

@@ -1,6 +1,7 @@
 :root {
   font-family: 'IBM Plex Sans', sans-serif;
-  --grey: #f9f9f9; }
+  --grey: #f9f9f9;
+  --paint-color: #784ca5; }
 
 *,
 *:before,
@@ -10,7 +11,9 @@
 body {
   background-color: #f9f9f9;
   padding: 0;
-  margin: 0; }
+  margin: 0;
+  color: #272822;
+  line-height: 1.5; }
 
 h1 {
   font-size: calc(2em + 7vh);
@@ -29,7 +32,7 @@ header {
 
 main {
   font-size: 1.25em;
-  line-height: 1.25;
+  line-height: 1.618;
   margin: 0 auto;
   max-width: 80ch;
   padding: 1em 2em; }
@@ -46,14 +49,56 @@ nav ul {
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
 
 a {
-  background: var(--prime-color);
-  color: var(--grey);
-  padding: 0 .5em;
-  border-radius: 1em .25em 1em .25em;
+  --shadow-color: #f9f9f9;
   font-style: italic;
-  transition: padding .15s ease-in-out; }
+  overflow: hidden;
+  position: relative;
+  display: inline-block;
+  color: #272822;
+  outline: none;
+  vertical-align: bottom;
+  text-decoration: none;
+  white-space: nowrap;
+  padding: 0 .20em;
+  font-size: 1em;
+  transition: color .5s, text-shadow .5s;
+  transition-delay: 0;
+  text-shadow: 1px 1px var(--shadow-color), -1px -1px var(--shadow-color), 1px -1px var(--shadow-color), -1px 1px var(--shadow-color); }
+  a::before, a::after {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    content: '';
+    transition: transform .3s ease-out;
+    z-index: 0; }
+  a::before {
+    border-top: 2px solid black;
+    background: transparent;
+    transition-delay: .2s;
+    transform: translateY(calc(88% - 2px)) scaleX(0.85);
+    transition-duration: .2s;
+    z-index: -1; }
+  a::after {
+    z-index: -1;
+    transform: translateY(-100%);
+    border-radius: 0 0 3px 3px; }
   a:hover, a:focus {
-    padding: 0 .75em; }
+    transition-delay: .25s; }
+    a:hover::before, a:hover::after, a:focus::before, a:focus::after {
+      transform: translateX(0) scaleX(1); }
+    a:hover::before, a:focus::before {
+      transition-delay: .2s; }
+    a:hover::after, a:focus::after {
+      transition-delay: .3s; }
+  .paint a::before {
+    border-color: #784ca5; }
+  .paint a::after {
+    background: rgba(120, 76, 165, 0.7); }
+  .paint a:hover, .paint a:focus {
+    --shadow-color: #784ca5;
+    color: #f9f9f9; }
 
 .try-it-out {
   display: grid;
