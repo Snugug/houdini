@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Houdini Custom Properties</title>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/shared/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
+
+    <link href="https://fonts.googleapis.com/css?family=Megrim&text=CustomProperties" rel="stylesheet">
+
+    <script type="module">
+      import '/shared/app.js';
+    </script>
+    <style>
+      :root {
+        --arrow-height: 5vh;
+        --banner-color: var(--props);
+      }
+
+      .intro {
+        font-family: 'Megrim', cursive;
+        color: var(--grey);
+      }
+    </style>
+</head>
+<body>
+  <header class="banner intro">
+    <div class="banner--inner">
+      <div class="container">
+        <h1 class="title">Custom Properties</h1>
+      </div>
+    </div>
+  </header>
+
+  <section class="container">
+    <p>Hello World</p>
+  </section>
+
+
+  <footer class="body-footer">
+    <nav class="container">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/worklets">Worklets</a></li>
+        <li><a href="/typed-om">Typed OM</a></li>
+        <li><a href="/custom-properties">Custom Properties</a></li>
+        <li><a href="/paint">Paint API</a></li>
+        <li><a href="/animation">Animation API</a></li>
+        <li><a href="/layout">Layout API</a></li>
+        <li><a href="/more">More Houdini</a></li>
+        <li><a href="/resources">Resources</a></li>
+      </ul>
+    </nav>
+
+    <div class="container"><p class="me">Made with love by <a href="https://snugug.com" target="_blank">Sam Richard</a> (<a href="https://twitter.com/snugug" target="_blank">@snugug</a>)</p></div>
+    <!-- include the Glitch button to show what the webpage is about and
+        to make it easier for folks to view source and remix -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
+  </footer>
+</body>
+</html>
