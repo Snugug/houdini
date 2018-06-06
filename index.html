@@ -4,35 +4,482 @@
     <title>Houdini Spellbook</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="/style.css">
-    
-    <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
-  </head>  
-  <body>
-    <h1>CSS Houdini</h1>
-    
-    <div class="image-intro">
-      <img class="image-intro--image" src="https://cdn.glitch.com/4603210b-4e8e-4be7-bcd5-01e701ff1a62%2Fmagic.gif?1526736042746" alt="Fingers over face, magic">
-      <blockquote class="image-intro--blockquote">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
+    <link rel="stylesheet" href="/shared/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Bungee+Shade&text=CSHoudin" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&text=Worklets" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Megrim&text=CustomProperties" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Finger+Paint&text=PAINT" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Faster+One&text=AnimationAPI" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&text=LayoutAPI" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Nixie+One&text=TypedOM" rel="stylesheet">
+
+
+    <script type="module">
+      import '/shared/app.js';
+    </script>
+  </head>
+  <style>
+    :root {
+      --arrow-height: 10vh;
+    }
+
+    /* Title Component */
+    .title {
+      text-align: center;
+      line-height: 1;
+      font-size: calc(2em + 10vw);
+      padding: 2rem;
+      margin: 0;
+      word-break: break-word;
+      color: currentColor;
+      font-weight: normal;
+      /*text-shadow: 2px 2px #999, -2px -2px #999, 2px -2px #999, -2px 2px #999;*/
+    }
+
+    h2.title {
+      font-size: calc(1.5em + 5vw);
+      padding: 0;
+    }
+
+    h3.title {
+      font-size: calc(1em + 3vw);
+      padding: 0;
+    }
+
+    @media (min-width: 64.6875em) {
+      .title {
+        font-size: 9rem;
+      }
+
+      h2.title {
+        font-size: 5.125rem;
+      }
+
+      h3.title {
+        font-size: 3.1875rem;
+      }
+    }
+
+    .title a {
+      color: currentColor;
+      text-decoration: none;
+      position: relative;
+      vertical-align: top;
+      text-shadow: 2px 2px var(--banner-color), -2px -2px var(--banner-color), -2px 2px var(--banner-color), 2px -2px var(--banner-color);
+      z-index: 5;
+      outline: none;
+      display: inline-block;
+    }
+
+    .title a::after {
+      background-color: currentColor;
+      content: '';
+      height: .05em;
+      /*width: 50%;*/
+      display: block;
+      margin: 0 auto;
+      top: -.08em;
+      z-index: -1;
+      position: relative;
+      transition: transform .25s ease-in-out, top .25s ease-in-out;
+    }
+
+    .title a:hover::after,
+    .title a:focus::after {
+      transform: translateY(-1em);
+      /*top: 0;*/
+    }
+
+    /* Banner Component */
+    .banner {
+      background-color: var(--banner-color);
+      display: block;
+      height: auto;
+      min-height: 20vh;
+      position: relative;
+      background: transparent;
+      z-index: 0;
+      padding-top: calc(var(--arrow-height) + 1em);
+      text-align: center;
+      margin-top: calc(var(--arrow-height) * -1);
+    }
+
+    .banner p {
+      max-width: 50ch;
+      margin: 0 auto;
+      margin-top: 1rem;
+      font-size: 1.1em;
+    }
+
+    .banner--inner {
+      background-color: var(--banner-color);
+      padding-bottom: calc(var(--arrow-height) + 1em);
+    }
+
+    .banner::after {
+      border-color: transparent var(--banner-color) transparent transparent;
+      border-style: solid;
+      border-width: var(--arrow-height) 100vw 0 0;
+      content: '';
+      display: block;
+      height: var(--arrow-height);
+      width: 100%;
+      background-color: transparent;
+      position: absolute;
+      top: 1em;
+      z-index: 5;
+    }
+
+    .banner::before {
+      border-color: transparent transparent var(--banner-color) transparent;
+      border-style: solid;
+      border-width: 0 100vw var(--arrow-height) 0;
+      content: '';
+      display: block;
+      height: var(--arrow-height);
+      width: 100%;
+      background-color: transparent;
+      margin-top: calc(var(--arrow-height) * -1);
+      position: relative;
+      z-index: 5;
+    }
+
+    /* Styling */
+    .intro {
+      --banner-color: var(--black);
+      margin-top: 0;
+      padding-top: 0;
+      margin-bottom: calc(var(--arrow-height) - 5em);
+      color: var(--grey);
+    }
+
+    .intro .banner--inner {
+      padding-bottom: 0;
+    }
+
+    .intro .title {
+      font-family: 'Bungee Shade', cursive;
+    }
+
+    .intro::before,
+    .intro::after {
+      bottom: 0;
+      position: relative;
+    }
+
+    .intro::after {
+      border-color: transparent var(--banner-color) transparent transparent;
+      border-width: 0 100vw var(--arrow-height) 0;
+      top: 0;
+      transform: rotateY(180deg) scaleX(.5) translateX(-50%);
+    }
+
+    .intro::before {
+      border-color: transparent transparent transparent var(--banner-color);
+      border-width: 0 0 var(--arrow-height) 100vw;
+      transform: rotateY(180deg) scaleX(.5) translateX(50%);
+      position: absolute;
+    }
+
+    .worklets {
+      --banner-color: var(--worklets);
+      color: var(--black);
+    }
+
+    .worklets .title {
+      font-family: 'Black Ops One', cursive;
+    }
+
+    .typed {
+      --banner-color: var(--typed);
+      color: var(--black);
+    }
+
+    .typed .title {
+      font-family: 'Nixie One', cursive;
+    }
+
+    .props {
+      --banner-color: var(--props);
+      color: var(--grey);
+    }
+
+    .props .title {
+      font-family: 'Megrim', cursive;
+    }
+
+    .paint {
+      --banner-color: var(--paint);
+      color: var(--grey);
+    }
+
+    .paint .title {
+      font-family: 'Finger Paint', cursive;
+      text-transform: uppercase;
+    }
+
+    .animation {
+      --banner-color: var(--animation);
+    }
+
+    .animation .title {
+      font-family: 'Faster One', cursive;
+      font-weight: normal;
+    }
+
+    .layout {
+      --banner-color: var(--layout);
+    }
+
+    .layout .title {
+      font-family: 'Fredericka the Great', cursive;
+      font-weight: normal;
+    }
+
+    .more {
+      --banner-color: #ddd;
+    }
+
+    .resources {
+      --banner-color: #ccc;
+      margin-bottom: -1em;
+    }
+
+    .more .title,
+    .resources .title {
+      font-weight: normal;
+      color: var(--black);
+    }
+
+    /* Quote */
+    .quote {
+      border: 2px dashed var(--black);
+      padding: .5em;
+      max-width: 60ch;
+      margin: 1em auto;
+      font-size: 1.25em;
+      text-align: center;
+    }
+
+    .quote--image {
+      margin: 0 auto;
+      text-align: center;
+      display: block;
+      margin-bottom: 1em;
+    }
+
+    .quote--cite {
+      display: block;
+      text-align: right;
+    }
+
+    @media (min-width: 35.375em) {
+      .quote {
+        display: grid;
+        grid-template-columns: 275px 1fr;
+        grid-gap: 1em;
+        text-align: left;
+      }
+
+      .quote--image {
+        margin-bottom: 0;
+      }
+    }
+
+    .body {
+      margin-bottom: calc(var(--arrow-height) + 1em);
+      text-align: justify;
+    }
+
+    /* Big Pull */
+    .big-pull {
+      font-size: calc(1em + 2vw);
+      line-height: 1.25;
+      text-align: right;
+      right: 0;
+      position: relative;
+      display: flex;
+      flex-direction: row-reverse;
+      font-weight: bold;
+      border-right: .25em solid var(--black);
+      padding: .25em;
+    }
+
+    .big-pull--content {
+      max-width: 90%;
+    }
+
+    .big-pull--offset {
+      /*color: var(--grey);*/
+      /*background-color: var(--black);*/
+      font-style: italic;
+      text-decoration: underline;
+      /*padding: 0 .25em;*/
+    }
+
+    @media (min-width: 64.6875em) {
+      .big-pull {
+        font-size: 2.85rem;
+      }
+    }
+
+    .ready-embed {
+      width: 100%;
+      height: 50vh;
+      min-height: 400px;
+      margin-top: 1em;
+      border: 2px dashed var(--black);
+      padding: .5em;
+    }
+
+    .demo-warning {
+      margin-bottom: 0;
+      padding-bottom: 0;
+      text-transform: uppercase;
+      margin-top: 1em;
+    }
+    .terms-and-condition {
+      margin-top: 0;
+      font-size: .8em;
+      line-height: 1.1;
+    }
+
+
+  </style>
+  <body class="home">
+    <header class="banner intro">
+      <div class="banner--inner">
+        <div class="container">
+          <h1 class="title">CSS Houdini</h1>
+        </div>
+      </div>
+    </header>
+
+    <div class="quote">
+      <img class="quote--image" src="https://cdn.glitch.com/4603210b-4e8e-4be7-bcd5-01e701ff1a62%2Fmagic.gif?1526736042746" alt="Fingers over face, magic">
+      <blockquote class="quote--blockquote">
         <p>
-          The objective of the CSS-TAG Houdini Task Force (CSS Houdini) is to jointly develop features that explain the “magic” of Styling and Layout on the web.
+          The objective of the <em>CSS-TAG Houdini Task Force</em> (CSS Houdini) is to jointly develop features that explain the “magic” of Styling and Layout on the web.
         </p>
-        <cite><a href="https://github.com/w3c/css-houdini-drafts/wiki">CSS Houdini</a></cite>
-      </blockquote>  
+        <cite class="quote--cite"><a href="https://github.com/w3c/css-houdini-drafts/wiki">CSS Houdini</a></cite>
+      </blockquote>
     </div>
-    
-    
-    <p>
-      Welcome to remixable Houdini!
-    </p>
-    
-    <!-- include the Glitch button to show what the webpage is about and
+
+    <section class="body container">
+      <p>What this means is that we'll finally be able to <strong>Extend CSS via JavaScript</strong>. This is important because it's currently not possible to <em>extend</em> CSS with JavaScript, only write JavaScript that mimics CSS. Actually polyfilling CSS, or introducing new features (like CSS Grid), is hard-to-impossible to do, doubly so in a way that's not terrible for performance. CSS Houdini will let authors <em>tap in to the actual CSS engine</em>, finally allowing us to extend CSS, and do so at CSS speeds</p>
+      <blockquote class="big-pull">
+        <p class="big-pull--content">Much like Service Workers are a low-level JavaScript API for the browser's cache, <span class="big-pull--offset">Houdini introduces low-level JavaScript APIs for the browser's render engines</span></p>
+      </blockquote>
+
+      <p>This is <em>awesome</em>, and is going to give us a lot of power, but unfortunately, it's not quite ready yet</p>
+
+      <iframe class="ready-embed" src="http://ishoudinireadyyet.com/" frameborder="0"></iframe>
+
+      <h4 class="blink demo-warning">Proceed With Caution</h4>
+      <p class="terms-and-condition">The demos presented are, <em>at best</em>, based off of working drafts that are still in flux. No compatible implementations exist. What little actually works only really does so in Chrome Canary. These demos will likely break if not viewed there. Syntax and semantics are likely to change. In fact, in the course of a year, one API has gone through 4ish incompatible API changes. Some of the examples provided are speculative based on previous and current working implementations and may not reflect final syntax. Terms and conditions apply. Not redeemable for cash. Your mileage may vary.</p>
+      <p><strong>Cool?!</strong> Let's get started! Follow the links below to learn more about some of the key Houdini APIs and concepts, including live code you can play with! When you're all done, check out some of the additional resources to learn more!</p>
+    </section>
+
+    <section class="banner worklets">
+      <div class="banner--inner">
+        <div class="container">
+          <h2 class="title"><a href="/worklets">Worklets</a></h2>
+          <p>itty bitty web<em>ish</em> workers, Worklets are the foundation to how render engines can be extended</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner typed">
+      <div class="banner--inner">
+        <div class="container">
+          <h2 class="title"><a href="/typed-om">Typed OM</a></h2>
+          <p>aka CSSOM v2, the Typed OM gives shape and structure to CSS values that previously were simple strings</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner props">
+      <div class="banner--inner">
+        <div class="container">
+          <h2 class="title"><a href="/custom-properties">Custom Properties</a></h2>
+          <p>Make snozzberries taste like snozzberries; Custom Properties give shape, structure, and constraints to CSS Variables</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner paint">
+      <div class="banner--inner">
+        <div class="container">
+          <h2 class="title"><a href="/paint">Paint API</a></h2>
+          <p>Bob Ross in your CSS; the Paint API provides a 2D Canvas-like drawing context wherever you can use images in CSS</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner animation">
+      <div class="banner--inner">
+        <div class="container">
+          <h2 class="title"><a href="/animation">Animation API</a></h2>
+          <p>Yo dawg, I heard you like parallax; the Animation API allows animation effects to be tied to user input in a preferment way</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner layout">
+      <div class="banner--inner">
+        <div class="container">
+          <h2 class="title"><a href="/layout">Layout API</a></h2>
+          <p>Think Tetris; literally create your own <code>display</code> properties, defining your own layout! Masonry, here we come!</p>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner more">
+      <div class="banner--inner">
+        <div class="container">
+          <h3 class="title">More Houdini</h3>
+        </div>
+
+      </div>
+    </section>
+
+    <section class="banner resources">
+      <div class="banner--inner">
+        <div class="container">
+          <h3 class="title">Resources</h3>
+        </div>
+
+      </div>
+    </section>
+
+    <footer class="body-footer">
+      <nav class="container">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/worklets">Worklets</a></li>
+          <li><a href="/typed-om">Typed OM</a></li>
+          <li><a href="/custom-properties">Custom Properties</a></li>
+          <li><a href="/paint">Paint API</a></li>
+          <li><a href="/animation">Animation API</a></li>
+          <li><a href="/layout">Layout API</a></li>
+          <li><a href="/more">More Houdini</a></li>
+          <li><a href="/resources">Resources</a></li>
+        </ul>
+      </nav>
+
+      <div class="container"><p class="me">Made with love by <a href="https://snugug.com" target="_blank">Sam Richard</a> (<a href="https://twitter.com/snugug" target="_blank">@snugug</a>)</p></div>
+      <!-- include the Glitch button to show what the webpage is about and
           to make it easier for folks to view source and remix -->
-    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
-    <script src="https://button.glitch.me/button.js"></script>
+      <!-- <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div> -->
+      <!-- <script src="https://button.glitch.me/button.js"></script> -->
+    </footer>
   </body>
 </html>
