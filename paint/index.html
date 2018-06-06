@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
   <title>Paint with Houdini</title>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i|Finger+Paint&text=PAINT" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/style.css">
@@ -79,7 +80,7 @@
   <header class="paint-api">
     <h1 class="paint-api--text">Paint API</h1>
   </header>
-  <main>
+  <main class="container">
     <article>
       <p>The <a href="https://drafts.css-houdini.org/css-paint-api/">CSS Painting API Level 1</a>, also known as the Houdini <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span>, gives us a new option for places where we would use images in CSS: backgrounds, masks, and the like. With the new <code>paint()</code> function, and a <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> <a href="/worklets">worklet</a>, we can:</p>
       <ul>
@@ -139,8 +140,26 @@ registerPaint('sample-paint', class {
     </article>
   </main>
   <div id="repl"></div>
-  <footer>
-    <p>This is my footer</p>
+  <footer class="body-footer">
+    <nav class="container">
+      <ul>
+        <li><a href="/">Home</a></li>
+        <li><a href="/worklets">Worklets</a></li>
+        <li><a href="/typed-om">Typed OM</a></li>
+        <li><a href="/custom-properties">Custom Properties</a></li>
+        <li><a href="/paint">Paint API</a></li>
+        <li><a href="/animation">Animation API</a></li>
+        <li><a href="/layout">Layout API</a></li>
+        <li><a href="/more">More Houdini</a></li>
+        <li><a href="/resources">Resources</a></li>
+      </ul>
+    </nav>
+
+    <div class="container"><p class="me">Made with love by <a href="https://snugug.com" target="_blank">Sam Richard</a> (<a href="https://twitter.com/snugug" target="_blank">@snugug</a>)</p></div>
+    <!-- include the Glitch button to show what the webpage is about and
+        to make it easier for folks to view source and remix -->
+    <div class="glitchButton" style="position:fixed;top:20px;right:20px;"></div>
+    <script src="https://button.glitch.me/button.js"></script>
   </footer>
 </body>
 </html>
