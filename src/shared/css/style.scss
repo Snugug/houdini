@@ -1,11 +1,23 @@
 $grey: #f9f9f9;
+$worklets: #F4B766;
+$typed: #44A384;
+$props: #AF499C;
 $paint: #784ca5;
+$animation: #F4EC66;
+$layout: #CBE961;
 $black: #272822;
 
 :root {
   font-family: 'IBM Plex Sans', sans-serif;
   --grey: #{$grey};
-  --paint-color: #{$paint};
+  --paint: #{$paint};
+  --worklets: #{$worklets};
+  --typed: #{$typed};
+  --props: #{$props};
+  --paint: #{$paint};
+  --animation: #{$animation};
+  --layout: #{$layout};
+  --black: #{$black};
 }
 
 *,
@@ -16,10 +28,15 @@ $black: #272822;
 
 body {
   background-color: $grey;
+  --shadow-color: #{$grey};
   padding: 0;
   margin: 0;
   color: $black;
   line-height: 1.5;
+}
+
+.paint {
+  --prime-color: #{$paint};
 }
 
 h1 {
@@ -40,7 +57,17 @@ header {
   /*padding: .5em;*/
 }
 
-main {
+blockquote {
+  margin: 0;
+  padding: 0;
+
+  > p {
+    margin: 0;
+    padding: 0;
+  }
+}
+
+.container {
   font-size: 1.25em;
   line-height: 1.618;
   margin: 0 auto;
@@ -52,14 +79,22 @@ code {
   font-family: 'IBM Plex Mono', monospace;
 }
 
-nav {
-  background: linear-gradient(to bottom, white, $grey);
-}
+// nav {
+//   background: linear-gradient(to bottom, white, $grey);
+// }
 
 nav ul {
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  // grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  list-style: none;
+  padding: 0;
+
+  li {
+    padding: .25em .125em;
+  }
 }
 
 @mixin anchorStyle($bkg, $color) {
@@ -78,8 +113,9 @@ nav ul {
   }
 }
 
-a {
-  --shadow-color: #{$grey};
+p a,
+cite a,
+nav a {
   font-style: italic;
   // font-weight: bold;
   overflow: hidden;
@@ -95,6 +131,7 @@ a {
   transition: color .5s, text-shadow .5s;
   transition-delay: 0;
   text-shadow: 1px 1px var(--shadow-color), -1px -1px var(--shadow-color), 1px -1px var(--shadow-color), -1px 1px var(--shadow-color);
+  z-index: 0;
 
   &::before,
   &::after {
@@ -158,5 +195,38 @@ a {
   @media (min-width: 66em) {
     width: 70ch;
     margin-left: 10ch;
+  }
+}
+
+
+.body-footer {
+  margin-top: 1em;
+  background: #eee;
+  --shadow-color: #eee;
+}
+
+.me {
+  font-size: .8rem;
+  text-align: right;
+}
+
+.blink,
+.blink-2,
+.blink-3 {
+  animation: blink 1s steps(5, start) infinite;
+  animation-delay: 0s;
+}
+
+.blink-2 {
+  animation-delay: .1s;
+}
+
+.blink-3 {
+  animation-delay: .2s;
+}
+
+@keyframes blink {
+  to {
+    visibility: hidden;
   }
 }

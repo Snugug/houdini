@@ -1,7 +1,14 @@
 :root {
   font-family: 'IBM Plex Sans', sans-serif;
   --grey: #f9f9f9;
-  --paint-color: #784ca5; }
+  --paint: #784ca5;
+  --worklets: #F4B766;
+  --typed: #44A384;
+  --props: #AF499C;
+  --paint: #784ca5;
+  --animation: #F4EC66;
+  --layout: #CBE961;
+  --black: #272822; }
 
 *,
 *:before,
@@ -10,10 +17,14 @@
 
 body {
   background-color: #f9f9f9;
+  --shadow-color: #f9f9f9;
   padding: 0;
   margin: 0;
   color: #272822;
   line-height: 1.5; }
+
+.paint {
+  --prime-color: #784ca5; }
 
 h1 {
   font-size: calc(2em + 7vh);
@@ -30,7 +41,14 @@ header {
   width: 100vw;
   /*padding: .5em;*/ }
 
-main {
+blockquote {
+  margin: 0;
+  padding: 0; }
+  blockquote > p {
+    margin: 0;
+    padding: 0; }
+
+.container {
   font-size: 1.25em;
   line-height: 1.618;
   margin: 0 auto;
@@ -40,16 +58,19 @@ main {
 code {
   font-family: 'IBM Plex Mono', monospace; }
 
-nav {
-  background: linear-gradient(to bottom, white, #f9f9f9); }
-
 nav ul {
   margin: 0;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  list-style: none;
+  padding: 0; }
+  nav ul li {
+    padding: .25em .125em; }
 
-a {
-  --shadow-color: #f9f9f9;
+p a,
+cite a,
+nav a {
   font-style: italic;
   overflow: hidden;
   position: relative;
@@ -63,8 +84,13 @@ a {
   font-size: 1em;
   transition: color .5s, text-shadow .5s;
   transition-delay: 0;
-  text-shadow: 1px 1px var(--shadow-color), -1px -1px var(--shadow-color), 1px -1px var(--shadow-color), -1px 1px var(--shadow-color); }
-  a::before, a::after {
+  text-shadow: 1px 1px var(--shadow-color), -1px -1px var(--shadow-color), 1px -1px var(--shadow-color), -1px 1px var(--shadow-color);
+  z-index: 0; }
+  p a::before, p a::after,
+  cite a::before,
+  cite a::after,
+  nav a::before,
+  nav a::after {
     position: absolute;
     top: 0;
     left: 0;
@@ -73,30 +99,62 @@ a {
     content: '';
     transition: transform .3s ease-out;
     z-index: 0; }
-  a::before {
+  p a::before,
+  cite a::before,
+  nav a::before {
     border-top: 2px solid black;
     background: transparent;
     transition-delay: .2s;
     transform: translateY(calc(88% - 2px)) scaleX(0.85);
     transition-duration: .2s;
     z-index: -1; }
-  a::after {
+  p a::after,
+  cite a::after,
+  nav a::after {
     z-index: -1;
     transform: translateY(-100%);
     border-radius: 0 0 3px 3px; }
-  a:hover, a:focus {
+  p a:hover, p a:focus,
+  cite a:hover,
+  cite a:focus,
+  nav a:hover,
+  nav a:focus {
     transition-delay: .25s; }
-    a:hover::before, a:hover::after, a:focus::before, a:focus::after {
+    p a:hover::before, p a:hover::after, p a:focus::before, p a:focus::after,
+    cite a:hover::before,
+    cite a:hover::after,
+    cite a:focus::before,
+    cite a:focus::after,
+    nav a:hover::before,
+    nav a:hover::after,
+    nav a:focus::before,
+    nav a:focus::after {
       transform: translateX(0) scaleX(1); }
-    a:hover::before, a:focus::before {
+    p a:hover::before, p a:focus::before,
+    cite a:hover::before,
+    cite a:focus::before,
+    nav a:hover::before,
+    nav a:focus::before {
       transition-delay: .2s; }
-    a:hover::after, a:focus::after {
+    p a:hover::after, p a:focus::after,
+    cite a:hover::after,
+    cite a:focus::after,
+    nav a:hover::after,
+    nav a:focus::after {
       transition-delay: .3s; }
-  .paint a::before {
+  .paint p a::before, .paint
+  cite a::before, .paint
+  nav a::before {
     border-color: #784ca5; }
-  .paint a::after {
+  .paint p a::after, .paint
+  cite a::after, .paint
+  nav a::after {
     background: rgba(120, 76, 165, 0.7); }
-  .paint a:hover, .paint a:focus {
+  .paint p a:hover, .paint p a:focus, .paint
+  cite a:hover, .paint
+  cite a:focus, .paint
+  nav a:hover, .paint
+  nav a:focus {
     --shadow-color: #784ca5;
     color: #f9f9f9; }
 
@@ -110,3 +168,28 @@ a {
     .try-it-out {
       width: 70ch;
       margin-left: 10ch; } }
+
+.body-footer {
+  margin-top: 1em;
+  background: #eee;
+  --shadow-color: #eee; }
+
+.me {
+  font-size: .8rem;
+  text-align: right; }
+
+.blink,
+.blink-2,
+.blink-3 {
+  animation: blink 1s steps(5, start) infinite;
+  animation-delay: 0s; }
+
+.blink-2 {
+  animation-delay: .1s; }
+
+.blink-3 {
+  animation-delay: .2s; }
+
+@keyframes blink {
+  to {
+    visibility: hidden; } }
