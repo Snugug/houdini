@@ -193,3 +193,113 @@ nav a {
 @keyframes blink {
   to {
     visibility: hidden; } }
+
+/* Banner Component */
+.banner {
+  background-color: var(--banner-color);
+  display: block;
+  height: auto;
+  min-height: 20vh;
+  position: relative;
+  background: transparent;
+  z-index: 0;
+  padding-top: calc(var(--arrow-height) + 1em);
+  text-align: center;
+  margin-top: calc(var(--arrow-height) * -1); }
+  .banner::before, .banner::after {
+    content: '';
+    display: block;
+    height: var(--arrow-height);
+    width: 100%;
+    border-style: solid;
+    background-color: transparent;
+    z-index: 5; }
+  .banner::after {
+    border-color: transparent var(--banner-color) transparent transparent;
+    border-width: var(--arrow-height) 100vw 0 0;
+    position: absolute;
+    top: 1em; }
+  .banner::before {
+    border-color: transparent transparent var(--banner-color) transparent;
+    border-width: 0 100vw var(--arrow-height) 0;
+    height: var(--arrow-height);
+    margin-top: calc(var(--arrow-height) * -1);
+    position: relative;
+    z-index: 5; }
+  .banner p {
+    max-width: 50ch;
+    margin: 0 auto;
+    margin-top: 1rem;
+    font-size: 1.1em; }
+  .banner--inner {
+    background-color: var(--banner-color);
+    padding-bottom: calc(var(--arrow-height) + 1em); }
+  .banner.intro {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: calc(var(--arrow-height) - 5em); }
+    .banner.intro::before, .banner.intro::after {
+      bottom: 0;
+      position: relative; }
+    .banner.intro::after {
+      border-color: transparent var(--banner-color) transparent transparent;
+      border-width: 0 100vw var(--arrow-height) 0;
+      top: 0;
+      transform: rotateY(180deg) scaleX(0.5) translateX(-50%); }
+    .banner.intro::before {
+      border-color: transparent transparent transparent var(--banner-color);
+      border-width: 0 0 var(--arrow-height) 100vw;
+      transform: rotateY(180deg) scaleX(0.5) translateX(50%);
+      position: absolute; }
+    .banner.intro .banner--inner {
+      padding-bottom: 0; }
+
+/* Title Component */
+.title {
+  text-align: center;
+  line-height: 1;
+  font-size: calc(2em + 10vw);
+  padding: 2rem;
+  margin: 0;
+  word-break: break-word;
+  color: currentColor;
+  font-weight: normal; }
+  .title a {
+    color: currentColor;
+    text-decoration: none;
+    position: relative;
+    vertical-align: top;
+    text-shadow: 2px 2px var(--banner-color), -2px -2px var(--banner-color), -2px 2px var(--banner-color), 2px -2px var(--banner-color);
+    z-index: 5;
+    outline: none;
+    display: inline-block; }
+    .title a::after {
+      background-color: currentColor;
+      content: '';
+      height: .05em;
+      /*width: 50%;*/
+      display: block;
+      margin: 0 auto;
+      top: -.08em;
+      z-index: -1;
+      position: relative;
+      transition: transform .25s ease-in-out, top .25s ease-in-out; }
+    .title a:hover::after, .title a:focus::after {
+      transform: translateY(-1em);
+      /*top: 0;*/ }
+
+h2.title {
+  font-size: calc(1.5em + 5vw);
+  padding: 0; }
+
+h3.title {
+  font-size: calc(1em + 3vw);
+  padding: 0; }
+
+@media (min-width: 64.6875em) {
+  .title {
+    font-size: 9rem; }
+  h2.title {
+    font-size: 5.125rem; }
+  h3.title {
+    font-size: 3.1875rem; } }

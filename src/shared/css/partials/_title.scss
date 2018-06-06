@@ -1,0 +1,65 @@
+/* Title Component */
+.title {
+  text-align: center;
+  line-height: 1;
+  font-size: calc(2em + 10vw);
+  padding: 2rem;
+  margin: 0;
+  word-break: break-word;
+  color: currentColor;
+  font-weight: normal;
+
+  a {
+    color: currentColor;
+    text-decoration: none;
+    position: relative;
+    vertical-align: top;
+    text-shadow: 2px 2px var(--banner-color), -2px -2px var(--banner-color), -2px 2px var(--banner-color), 2px -2px var(--banner-color);
+    z-index: 5;
+    outline: none;
+    display: inline-block;
+
+    &::after {
+      background-color: currentColor;
+      content: '';
+      height: .05em;
+      /*width: 50%;*/
+      display: block;
+      margin: 0 auto;
+      top: -.08em;
+      z-index: -1;
+      position: relative;
+      transition: transform .25s ease-in-out, top .25s ease-in-out;
+    }
+
+    &:hover::after,
+    &:focus::after {
+      transform: translateY(-1em);
+      /*top: 0;*/
+    }
+  }
+}
+
+h2.title {
+  font-size: calc(1.5em + 5vw);
+  padding: 0;
+}
+
+h3.title {
+  font-size: calc(1em + 3vw);
+  padding: 0;
+}
+
+@media (min-width: 64.6875em) {
+  .title {
+    font-size: 9rem;
+  }
+
+  h2.title {
+    font-size: 5.125rem;
+  }
+
+  h3.title {
+    font-size: 3.1875rem;
+  }
+}

@@ -1,0 +1,82 @@
+/* Banner Component */
+.banner {
+  background-color: var(--banner-color);
+  display: block;
+  height: auto;
+  min-height: 20vh;
+  position: relative;
+  background: transparent;
+  z-index: 0;
+  padding-top: calc(var(--arrow-height) + 1em);
+  text-align: center;
+  margin-top: calc(var(--arrow-height) * -1);
+
+  &::before,
+  &::after {
+    content: '';
+    display: block;
+    height: var(--arrow-height);
+    width: 100%;
+    border-style: solid;
+    background-color: transparent;
+    z-index: 5;
+  }
+
+  &::after {
+    border-color: transparent var(--banner-color) transparent transparent;
+    border-width: var(--arrow-height) 100vw 0 0;
+    position: absolute;
+    top: 1em;
+  }
+
+  &::before {
+    border-color: transparent transparent var(--banner-color) transparent;
+    border-width: 0 100vw var(--arrow-height) 0;
+    height: var(--arrow-height);
+    margin-top: calc(var(--arrow-height) * -1);
+    position: relative;
+    z-index: 5;
+  }
+
+  p {
+    max-width: 50ch;
+    margin: 0 auto;
+    margin-top: 1rem;
+    font-size: 1.1em;
+  }
+
+  &--inner {
+    background-color: var(--banner-color);
+    padding-bottom: calc(var(--arrow-height) + 1em);
+  }
+
+  &.intro {
+    margin-top: 0;
+    padding-top: 0;
+    margin-bottom: calc(var(--arrow-height) - 5em);
+
+    &::before,
+    &::after {
+      bottom: 0;
+      position: relative;
+    }
+
+    &::after {
+      border-color: transparent var(--banner-color) transparent transparent;
+      border-width: 0 100vw var(--arrow-height) 0;
+      top: 0;
+      transform: rotateY(180deg) scaleX(.5) translateX(-50%);
+    }
+
+    &::before {
+      border-color: transparent transparent transparent var(--banner-color);
+      border-width: 0 0 var(--arrow-height) 100vw;
+      transform: rotateY(180deg) scaleX(.5) translateX(50%);
+      position: absolute;
+    }
+
+    .banner--inner {
+      padding-bottom: 0;
+    }
+  }
+}
