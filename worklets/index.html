@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="/shared/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&text=Worklets" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&text=Wworklets" rel="stylesheet">
 
     <script type="module">
       import Editor from '/shared/editor.js';
@@ -26,6 +26,10 @@
       }
 
       .intro {
+        font-family: 'Black Ops One', cursive;
+      }
+
+      .type-worklets {
         font-family: 'Black Ops One', cursive;
       }
 
@@ -108,13 +112,13 @@
   </header>
 
   <section class="container">
-    <p><a href="https://drafts.css-houdini.org/worklets/">Worklets</a> are <em>extension points for rendering engines</em>. Conceptually, they're similar to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a>, but with a few key exceptions:</p>
+    <p><a href="https://drafts.css-houdini.org/worklets/"><span class="type-worklets">Worklets</span></a> are <em>extension points for rendering engines</em>. Conceptually, they're similar to <a href="https://developer.mozilla.org/en-US/docs/Web/API/Web_Workers_API">Web Workers</a>, but with a few key exceptions:</p>
     <ul>
-      <li>Designed to be parallelized; each worklet must always have 2 or more instances, any of which can be the one to actually run when called</li>
-      <li>Small scope; limited to no access to globally scoped items (except the function name of the worklet). This includes some "basics" like <code>setTimeout</code></li>
+      <li>Designed to be parallelized; each <span class="type-worklets">Worklet</span> must always have 2 or more instances, any of which can be the one to actually run when called</li>
+      <li>Small scope; limited to no access to globally scoped items (except the function name of the <span class="type-worklets">Worklet</span>). This includes some "basics" like <code>setTimeout</code></li>
       <li>The <em>render engine</em> that they extend calls them when needed, not us!</li>
     </ul>
-    <p>Worklets are JavaScript modules, added by invoking the worklet's <code>addModule</code> function, which is a Promise.</p>
+    <p><span class="type-worklets">Worklets</span> are JavaScript modules, added by invoking the <span class="type-worklets">worklet</span>'s <code>addModule</code> function, which is a Promise.</p>
     <pre><code class="language-js">// From https://drafts.css-houdini.org/worklets/ May 8, 2018 Editor's Draft
 
 // From inside the browser's context
@@ -142,7 +146,7 @@ registerDemoWorklet('name', class { // The name we'll call this worklet
     return !arg;
   }
 });</code></pre>
-  <h2 id="worklet-lifecycle">Worklet Lifecycle</h2>
+  <h2 id="worklet-lifecycle"><span class="type-worklets">Worklet</span> Lifecycle</h2>
   <div id="lifecycle"><svg class="deck" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" viewBox="0 0 849.09 505.5">
       <defs>
           <style>.cls-1,.cls-11,.cls-4,.cls-5,.cls-6,.cls-7,.cls-8,.cls-9{fill:none;}.cls-2{clip-path:url(#clip-path);}.cls-3{fill:#fff;}.cls-4{stroke:#247000;}.cls-11,.cls-4,.cls-5,.cls-7,.cls-8,.cls-9{stroke-linecap:round;stroke-linejoin:round;}.cls-4,.cls-7,.cls-8{stroke-width:2px;}.cls-11,.cls-5,.cls-6{stroke:#000;}.cls-6{stroke-miterlimit:10;}.cls-7{stroke:hsl(59,50%,50%);fill:hsl(59,100%,50%);}.cls-8,.cls-9{stroke:#901b90;}.cls-8{stroke-dasharray:16 8 2 8;}.cls-9{stroke-dasharray:8 4 1 4;}.cls-10{font-size:16px;font-family:SourceCodePro-Regular, Source Code Pro;}.cls-11{stroke-width:3px;}</style>
@@ -315,13 +319,13 @@ registerDemoWorklet('name', class { // The name we'll call this worklet
   </svg>
       <div class="words">
         <ol>
-          <li>The Worklet lifecycle starts from within the render engine</li>
+          <li>The <span class="type-worklets">Worklet</span> lifecycle starts from within the render engine</li>
           <li class="fragment">For JavaScript, the render engine spins up its main JavaScript thread</li>
-          <li class="fragment">It then will spin up multiple worklet processes that worklets can live. These processes ideally are separate threads from the main thread, as to not block the main thread (but they don't need to be)</li>
+          <li class="fragment">It then will spin up multiple <span class="type-worklets">worklet</span> processes that <span class="type-worklets">worklets</span> can live. These processes ideally are separate threads from the main thread, as to not block the main thread (but they don't need to be)</li>
           <li class="fragment">The main thread then has our Browser JavaScript loaded in to it</li>
-          <li class="fragment">That JavaScript calls <code>worklet.addModule</code> to asynchronously load a worklet</li>
-          <li class="fragment">Once fetched, the worklet is loaded in to two or more of the available worklet processes</li>
-          <li class="fragment">When needed, the render engine will execute the worklet by calling the appropriate <code>process</code> function(s) from the loaded worklet. This call can be to any of the parallelized worklet instances</li>
+          <li class="fragment">That JavaScript calls <code>worklet.addModule</code> to asynchronously load a <span class="type-worklets">worklet</span></li>
+          <li class="fragment">Once fetched, the <span class="type-worklets">worklet</span> is loaded in to two or more of the available <span class="type-worklets">worklet</span> processes</li>
+          <li class="fragment">When needed, the render engine will execute the <span class="type-worklets">worklet</span> by calling the appropriate <code>process</code> function(s) from the loaded <span class="type-worklets">worklet</span>. This call can be to any of the parallelized <span class="type-worklets">worklet</span> instances</li>
         </ol>
       </div></div>
   </section>

@@ -24,6 +24,10 @@
         color: var(--black);
         font-family: 'Nixie One', cursive;
       }
+
+      .typed {
+        font-family: 'Nixie One', cursive;
+      }
     </style>
 </head>
 <body class="typed-om">
@@ -37,8 +41,8 @@
 
   <main class="container">
     <article>
-      <p>The <a href="https://drafts.css-houdini.org/css-typed-om/">Typed OM</a> is an extension to the existing CSS Object Model (CSSOM) that exposes CSS values as typed JavaScript objects, instead of a simple strings like they are today. Trying to convert strings in to meaningful types and back today can have a big performance overhead, so this will allow us to work with CSS values in a much more performant way</p>
-      <p>With the Typed OM, CSS values are now members of a new base class, <code>CSSStyleValue</code>. There are a number of subclasses of the <code>CSSStyleValue</code> that more precisely describe a type of CSS Value:</p>
+      <p>The <a href="https://drafts.css-houdini.org/css-typed-om/"><span class="typed">Typed OM</span></a> is an extension to the existing CSS Object Model (CSSOM) that exposes CSS values as typed JavaScript objects, instead of a simple strings like they are today. Trying to convert strings in to meaningful types and back today can have a big performance overhead, so this will allow us to work with CSS values in a much more performant way</p>
+      <p>With the <span class="typed">Typed OM</span>, CSS values are now members of a new base class, <code>CSSStyleValue</code>. There are a number of subclasses of the <code>CSSStyleValue</code> that more precisely describe a type of CSS Value:</p>
       <dl>
         <dt><code>CSSKeywordValue</code></dt>
         <dd>CSS Keywords and other identifiers (like <code>inherit</code> or <code>grid</code>)</dd>
@@ -56,8 +60,8 @@
     </article>
 
     <article>
-      <h2>Getting and Setting Typed OM Values</h2>
-      <p>There are two primary methods on elements for working with the Typed OM: <code>attributeStyleMap</code> for getting and setting typed inline styles, and <code>computedStyleMap</code> for getting an element's full Typed OM styles.</code>. Let's look at some examples (we'll be using <code>$()</code> as shorthand for <code>document.querySelector()</code>):</p>
+      <h2>Getting and Setting <span class="typed">Typed OM</span> Values</h2>
+      <p>There are two primary methods on elements for working with the <span class="typed">Typed OM</span>: <code>attributeStyleMap</code> for getting and setting typed inline styles, and <code>computedStyleMap</code> for getting an element's full <span class="typed">Typed OM</span> styles.</code>. Let's look at some examples (we'll be using <code>$()</code> as shorthand for <code>document.querySelector()</code>):</p>
       <section>
         <h3><code>attributeStyleMap</code> Get and Set</h3>
         <p>When setting values, there are an array of <a href="https://drafts.css-houdini.org/css-typed-om/#numeric-factory">number functions</a> for working with values (other than keyword values)</p>
