@@ -62,11 +62,15 @@ code {
   font-family: 'IBM Plex Mono', monospace; }
 
 p code,
-li code {
+li code,
+dd code:not([class*='language-']) {
   font-size: .85rem;
   padding: .2rem .4rem;
   background-color: #e9e9e9;
   border-radius: 2px; }
+
+dd pre[class*='language-'] {
+  font-size: 1rem; }
 
 nav ul {
   margin: 0;
@@ -181,6 +185,21 @@ nav a {
   nav a:hover, .worklets
   nav a:focus {
     --shadow-color: #F4B766;
+    color: #272822; }
+  .typed-om p a::before, .typed-om
+  cite a::before, .typed-om
+  nav a::before {
+    border-color: #44A384; }
+  .typed-om p a::after, .typed-om
+  cite a::after, .typed-om
+  nav a::after {
+    background: rgba(68, 163, 132, 0.7); }
+  .typed-om p a:hover, .typed-om p a:focus, .typed-om
+  cite a:hover, .typed-om
+  cite a:focus, .typed-om
+  nav a:hover, .typed-om
+  nav a:focus {
+    --shadow-color: #44A384;
     color: #272822; }
 
 .try-it-out {

@@ -12,6 +12,7 @@
 
     <script type="module">
       import '/shared/app.js';
+      import '/shared/editor.js';
     </script>
     <style>
       :root {
@@ -25,7 +26,7 @@
       }
     </style>
 </head>
-<body>
+<body class="typed-om">
   <header class="banner intro">
     <div class="banner--inner">
       <div class="container">
@@ -34,9 +35,140 @@
     </div>
   </header>
 
-  <section class="container">
-    <p>Hello World</p>
-  </section>
+  <main class="container">
+    <article>
+      <p>The <a href="https://drafts.css-houdini.org/css-typed-om/">Typed OM</a> is an extension to the existing CSS Object Model (CSSOM) that exposes CSS values as typed JavaScript objects, instead of a simple strings like they are today. Trying to convert strings in to meaningful types and back today can have a big performance overhead, so this will allow us to work with CSS values in a much more performant way</p>
+      <p>With the Typed OM, CSS values are now members of a new base class, <code>CSSStyleValue</code>. There are a number of subclasses of the <code>CSSStyleValue</code> that more precisely describe a type of CSS Value:</p>
+      <dl>
+        <dt><code>CSSKeywordValue</code></dt>
+        <dd>CSS Keywords and other identifiers (like <code>inherit</code> or <code>grid</code>)</dd>
+        <dt><code>CSSPositionValue</code></dt>
+        <dd>Position (<code>x</code> and <code>y</code>) values</dd>
+        <dt><code>CSSImageValue</code></dt>
+        <dd>An object representing the value properties for an image</dd>
+        <dt><code>CSSUnitValue</code></dt>
+        <dd>Numeric values that can be expressed as a single value with single unit (like <code>50px</code>) or a single value or percentage without a unit</dd>
+        <dt><code>CSSMathValue</code></dt>
+        <dd>Complicated numeric values, like you would find with <code>calc</code>, <code>min</code>, and <code>max</code>. This includes subclasses <code>CSSMathSum</code>, <code>CSSMathProduct</code>, <code>CSSMathMin</code>, <code>CSSMathMax</code>, <code>CSSMathNegate</code>, and <code>CSSMathInvert</code></dd>
+        <dt><code>CSSTransformValue</code></dt>
+        <dd>A list of CSS transforms consisting of <code>CSSTransformComponent</code>s, including <code>CSSTranslate</code>, <code>CSSRotate</code>, <code>CSSScale</code>, <code>CSSSkew</code>, <code>CSSSkewX</code>, <code>CSSSkewY</code>, <code>CSSPerspective</code>, and/or <code>CSSMatrixComponent</code></dd>
+      </dl>
+    </article>
+
+    <article>
+      <h2>Getting and Setting Typed OM Values</h2>
+      <p>There are two primary methods on elements for working with the Typed OM: <code>attributeStyleMap</code> for getting and setting typed inline styles, and <code>computedStyleMap</code> for getting an element's full Typed OM styles.</code>. Let's look at some examples (we'll be using <code>$()</code> as shorthand for <code>document.querySelector()</code>):</p>
+      <section>
+        <h3><code>attributeStyleMap</code> Get and Set</h3>
+        <p>When setting values, there are an array of <a href="https://drafts.css-houdini.org/css-typed-om/#numeric-factory">number functions</a> for working with values (other than keyword values)</p>
+        <pre><code class="language-js">myElement.attributeStyleMap.set('font-size', CSS.em(2));
+myElement.attributeStyleMap.get('font-size'); // CSSUnitValue { value: 2, unit: 'em' }
+
+myElement.attributeStyleMap.set('opacity', CSS.number(.5));
+myElement.attributeStyleMap.get('opacity'); // CSSUnitValue { value: 0.5, unit: 'number' };
+</code></pre>
+      </section>
+      <section>
+        <h3><code>computedStyleMap</code> Output</h3>
+        <p><strong>Sample CSS</strong></p>
+        <pre><code class="language-css">.foo {
+  background-position: center bottom 10px;
+  transform: translateX(1em) rotate(50deg) skewX(10deg);
+  vertical-align: baseline;
+  width: calc(100% - 3em);
+}</code></pre>
+        <p><strong>Sample JavaScript</strong></p>
+        <pre><code class="language-js">const cs = $('.foo').computedStyleMap();
+
+cs.get('vertical-align');
+// CSSKeywordValue {
+//  value: 'baseline',
+// }
+
+cs.get('background-position').x;
+// CSSUnitValue {
+//   value: 50,
+//   unit: 'percent',
+// }
+
+cs.get('background-position').y;
+// CSSMathSum {
+//   operator: 'sum',
+//   values: CSSNumericArray {
+//     0: CSSUnitValue { value: -10, unit: 'px' },
+//     1: CSSUnitValue { value: 100, unit: 'percent' },
+//   },
+// }
+
+cs.get('width');
+// CSSMathSum {
+//   operator: 'sum',
+//   length: 2,
+//   values: CSSNumericArray {
+//     0: CSSUnitValue { value: -90, unit: 'px' },
+//     1: CSSUnitValue { value: 100, unit: 'percent' },
+//   },
+// }
+
+cs.get('transform');
+// CSSTransformValue {
+//   is2d: true,
+//   length: 3,
+//   0: CSSTranslate {
+//     is2d: true,
+//     x: CSSUnitValue { value: 20, unit: 'px' },
+//     y: CSSUnitValue { value: 0, unit: 'px' },
+//     z: CSSUnitValue { value: 0, unit: 'px' },
+//   },
+//   1: CSSRotate {
+//     is2d: true,
+//     angle: CSSUnitValue { value: 50, unit: 'deg' },
+//     x: CSSUnitValue { value: 0, unit: 'number' },
+//     y: CSSUnitValue { value: 0, unit: 'number' },
+//     z: CSSUnitValue { value: 1, unit: 'number' },
+//   },
+//   2: CSSSkewX {
+//     is2d: true,
+//     ax: CSSUnitValue { value: 10, unit: 'deg' },
+//   },
+// }
+
+
+</code></pre>
+      </section>
+    </article>
+  </main>
+
+<!--
+  <p><strong>Example CSS</strong></p>
+        <pre><code class="language-css">.foo {
+  transform: translateX(1em) rotate(50deg) skewX(10deg);
+}</code></pre>
+        <strong>Example JS</strong>
+        <pre><code class="language-js">document.querySelector('.foo').computedStyleMap().get('transform')
+
+// Output
+CSSTransformValue {
+  is2d: true,
+  length: 3,
+  0: CSSTranslate {
+    is2d: true,
+    x: CSSUnitValue { value: 20, unit: 'px' }
+    y: CSSUnitValue { value: 0, unit: 'px' }
+    z: CSSUnitValue { value: 0, unit: 'px' }
+  },
+  1: CSSRotate {
+    is2d: true,
+    angle: CSSUnitValue { value: 50, unit: 'deg' }
+    x: CSSUnitValue { value: 0, unit: 'number' }
+    y: CSSUnitValue { value: 0, unit: 'number' }
+    z: CSSUnitValue { value: 1, unit: 'number' }
+  },
+  2: CSSSkewX {
+    is2d: true,
+    ax: CSSUnitValue { value: 10, unit: 'deg' }
+  }
+}</code></pre> -->
 
 
   <footer class="body-footer">
