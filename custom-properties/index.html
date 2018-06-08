@@ -8,10 +8,59 @@
     <link rel="stylesheet" href="/shared/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css?family=Megrim&text=CustomProperties" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Megrim&text=CustomPropertiesy" rel="stylesheet">
 
     <script type="module">
       import '/shared/app.js';
+      import Repl from '/shared/repl.js';
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const repl = new Repl('#repl', {
+          'animated gradient': {
+            name: 'Animated Gradient',
+            features: [
+              'basic',
+              'linear gradient',
+              'transition',
+            ],
+            js: `CSS.registerProperty({
+  name: '--registered',
+  syntax: '<color>',
+  inherits: true,
+  initialValue: 'purple',
+});`,
+            css: `.unregistered {
+  --unregistered: #c0ffee;
+  background: linear-gradient(white, var(--unregistered));
+  transition: --unregistered 1s;
+  height: 3em;
+}
+
+.unregistered:hover,
+.unregistered:focus {
+  --unregistered: #bada55;
+}
+
+.registered {
+  --registered: #c0ffee;
+  background: linear-gradient(white, var(--registered));
+  transition: --registered 1s;
+  height: 3em;
+}
+
+.registered:hover,
+.registered:focus {
+  --registered: #bada55;
+}`,
+            html: `<button class="unregistered">
+  Unregistered
+</button>
+<button class="registered">
+  Registered
+</buttom>`,
+          },
+        } , 'props');
+      });
     </script>
     <style>
       :root {
@@ -23,9 +72,13 @@
         font-family: 'Megrim', cursive;
         color: var(--grey);
       }
+
+      .custom-props {
+        font-family: 'Megrim', cursive;
+      }
     </style>
 </head>
-<body>
+<body class="props">
   <header class="banner intro">
     <div class="banner--inner">
       <div class="container">
@@ -34,9 +87,74 @@
     </div>
   </header>
 
-  <section class="container">
-    <p>Hello World</p>
-  </section>
+  <main>
+    <section class="container">
+      <p>While <a href="https://www.w3.org/TR/css-variables-1/">CSS Variables</a> currently provide a way to define user-controlled properties, they have limited usefulness outside reuse through a <code>var()</code> reference and cannot be more strictly defined. <a href="https://drafts.css-houdini.org/css-properties-values-api/">CSS Properties & Values API Level 1</a>, aka <span class="custom-props">Custom Properties</span>, extend CSS Variables to allow us to register properties and define their type, initial value, and determine inheritance. This gives a great deal of power and flexibility</p>
+      <strong>Current Situation (CSS Variables)</strong>
+      <pre><code class="language-scss">.thing {
+  --my-color: green;
+  --my-color: url('not-a-color'); // It's just a variable! It doesn't know any better
+  color: var(--my-color); // This is now sad!
+}</code></pre>
+      <strong>But Then (Houdini <span class="custom-props">Custom Properties</span>)</strong>
+      <pre><code class="language-js">window.CSS.registerProperty({
+  name: '--my-color',
+  syntax: '&lt;color&gt;', // Now it's def a color. That `url` junk is skipped!
+});</code></pre>
+    </section>
+    <section class="container">
+      <h2>Anatomy of a Registered <span class="custom-props">Custom Property</span></h2>
+      <pre><code class="language-js"> // From https://drafts.css-houdini.org/css-properties-values-api/ June 7, 2018
+
+CSS.registerProperty({
+  name: '--foo', // String, name of the custom property
+  syntax: '&lt;color&gt;', // String, how to parse this property. Defaults to *
+  inherits: false, // Boolean, if true should inherit down the DOM tree
+  initialValue: 'black', // String, initial value of this property
+})</code></pre>
+      <p>There are a number of <a href="https://drafts.css-houdini.org/css-properties-values-api/#supported-syntax-strings">supported syntaxes</a> from the <a href="https://drafts.csswg.org/css-values-3/">CSS Values and Units</a> spec that can be used when registering a <span class="custom-props">Custom Property</span>:</p>
+      <dl>
+        <dt><code>&lt;length&gt;</code></dt>
+        <dd>Any valid length value</dd>
+        <dt><code>&lt;number&gt;</code></dt>
+        <dd>Any valid number value</dd>
+        <dt><code>&lt;percentage&gt;</code></dt>
+        <dd>Any valid percentage value</dd>
+        <dt><code>&lt;length-percentage&gt;</code></dt>
+        <dd>Any valid length or percentage value, or any <code>calc</code> expression combining length and percentage components</dd>
+        <dt><code>&lt;color&gt;</code></dt>
+        <dd>Any valid color value</dd>
+        <dt><code>&lt;image&gt;</code></dt>
+        <dd>Any Any valid image value</dd>
+        <dt><code>&lt;url&gt;</code></dt>
+        <dd>Any valid url value</dd>
+        <dt><code>&lt;integer&gt;</code></dt>
+        <dd>Any valid integer value</dd>
+        <dt><code>&lt;angle&gt;</code></dt>
+        <dd>Any valid angle value</dd>
+        <dt><code>&lt;time&gt;</code></dt>
+        <dd>Any valid time value</dd>
+        <dt><code>&lt;resolution&gt;</code></dt>
+        <dd>Any valid resolution value</dd>
+        <dt><code>&lt;transform-list&gt;</code></dt>
+        <dd>Any valid transform function value</dd>
+        <dt><code>&lt;custom-ident&gt;</code></dt>
+        <dd>Any valid ident value</dd>
+      </dl>
+      <p>You can also use <code>+</code> to allow for a space-separarted list of one or more items of that syntax, and separate syntaxes with <code>|</code> to allow one syntax or another</p>
+    </section>
+    <section>
+      <div class="container">
+        <h2>Play with <span class="custom-props">Custom Properties</span></h2>
+        <p>Now it's your turn! Below is an example of <span class="custom-props">Custom Properties</span> in action! It will show you how using <span class="custom-props">Custom Properties</span> affects the ability to animate the colors of a <a href="https://developer.mozilla.org/en-US/docs/Web/CSS/linear-gradient">linear gradient</a>. It's fully editable, and you'll see the changes live as you type! Change the JavaScript, the CSS, and the HTML, and see how those changes affect the output!</p>
+      </div>
+    </section>
+
+
+    <div id="repl"></div>
+  </main>
+
+
 
 
   <footer class="body-footer">

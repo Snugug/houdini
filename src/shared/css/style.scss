@@ -43,6 +43,10 @@ body {
   --prime-color: #{$worklets};
 }
 
+.props {
+  --prime-color: #{$props};
+}
+
 h1 {
   font-size: calc(2em + 7vh);
   padding: .25rem;
@@ -206,6 +210,10 @@ nav a {
 
   .typed-om & {
     @include anchorStyle($typed, $black);
+  }
+
+  .props & {
+    @include anchorStyle($props, $grey);
   }
 }
 

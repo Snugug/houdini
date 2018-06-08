@@ -29,6 +29,9 @@ body {
 .worklets {
   --prime-color: #F4B766; }
 
+.props {
+  --prime-color: #AF499C; }
+
 h1 {
   font-size: calc(2em + 7vh);
   padding: .25rem; }
@@ -201,6 +204,21 @@ nav a {
   nav a:focus {
     --shadow-color: #44A384;
     color: #272822; }
+  .props p a::before, .props
+  cite a::before, .props
+  nav a::before {
+    border-color: #AF499C; }
+  .props p a::after, .props
+  cite a::after, .props
+  nav a::after {
+    background: rgba(175, 73, 156, 0.7); }
+  .props p a:hover, .props p a:focus, .props
+  cite a:hover, .props
+  cite a:focus, .props
+  nav a:hover, .props
+  nav a:focus {
+    --shadow-color: #AF499C;
+    color: #f9f9f9; }
 
 .try-it-out {
   display: grid;

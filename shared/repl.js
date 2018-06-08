@@ -88,7 +88,12 @@ export default class {
     cssEditor.setAttribute('data-language', 'css');
     htmlEditor.classList.add('repl--editor');
     htmlEditor.setAttribute('data-language', 'markup');
-    workletEditor.style.zIndex = 100;
+
+    if (type === 'props') {
+      jsEditor.style.zIndex = 100;
+    } else {
+      workletEditor.style.zIndex = 100;
+    }
 
     const menuItems = {};
     // Build Menu
@@ -99,6 +104,10 @@ export default class {
       menuItems[key].textContent = key;
       menuItems[key].addEventListener('click', menuHandler);
       menu.appendChild(menuItems[key]);
+    }
+
+    if (type === 'props') {
+      switcherOptions.shift();
     }
 
     // Build REPL switcher
@@ -118,7 +127,9 @@ export default class {
     parent.appendChild(replTitle);
     parent.appendChild(replFeatures);
     parent.appendChild(replSwitcher);
-    parent.appendChild(workletEditor);
+    if (type !== 'props') {
+      parent.appendChild(workletEditor);
+    }
     parent.appendChild(jsEditor);
     parent.appendChild(cssEditor);
     parent.appendChild(htmlEditor);
@@ -141,6 +152,10 @@ export default class {
       css: cssEditor.querySelector('.editor--textarea'),
       html: htmlEditor.querySelector('.editor--textarea'),
     };
+
+    if (type === 'props') {
+      delete editors.worklet;
+    }
 
     resetEditors(optkey[0]);
 
@@ -184,7 +199,12 @@ export default class {
         replFeatures.contentEditable = false;
       }
 
-      replSwitcher.value = 'worklet';
+      if (type !== 'props') {
+        replSwitcher.value = 'worklet';
+      } else {
+        replSwitcher.value = 'js';
+      }
+
       replSwitcher.dispatchEvent(inputEvent);
     }
 
@@ -202,12 +222,13 @@ export default class {
         worklet = 'CSS.paintWorklet';
       }
 
-      let html = `
-      <head>
+      let html = `<head>
         <style>
           ${vals.css}
-        </style>
-        <script language="worklet">
+        </style>`
+
+      if (type !== 'props') {
+        html += `<script language="worklet">
           ${vals.worklet}
         </script>
         <script type="module">
@@ -228,8 +249,13 @@ export default class {
         init();
 
         </script>
-      </head>
-      <body>
+      </head>`;
+      } else {
+        html += `<script type="text/javascript">${vals.js}</script>
+        </head>`;
+      }
+
+      html += `<body>
         ${vals.html}
       </body>`;
 
