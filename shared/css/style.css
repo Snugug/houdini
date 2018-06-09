@@ -32,6 +32,9 @@ body {
 .props {
   --prime-color: #AF499C; }
 
+.animation {
+  --prime-color: #F4EC66; }
+
 h1 {
   font-size: calc(2em + 7vh);
   padding: .25rem; }
@@ -219,6 +222,21 @@ nav a {
   nav a:focus {
     --shadow-color: #AF499C;
     color: #f9f9f9; }
+  .animation p a::before, .animation
+  cite a::before, .animation
+  nav a::before {
+    border-color: #F4EC66; }
+  .animation p a::after, .animation
+  cite a::after, .animation
+  nav a::after {
+    background: rgba(244, 236, 102, 0.7); }
+  .animation p a:hover, .animation p a:focus, .animation
+  cite a:hover, .animation
+  cite a:focus, .animation
+  nav a:hover, .animation
+  nav a:focus {
+    --shadow-color: #F4EC66;
+    color: #272822; }
 
 .try-it-out {
   display: grid;

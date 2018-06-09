@@ -8,16 +8,105 @@
     <link rel="stylesheet" href="/shared/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&text=Worklets" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Faster+One&text=AnimationAPI" rel="stylesheet">
 
     <script type="module">
       import '/shared/app.js';
+
+      async function init() {
+        await animationWorklet.addModule('/animation/gradient.js');
+        const spans = document.querySelectorAll('.anim-span--gradient');
+        const scrollSource = document.body;
+        const timeRange = 1000;
+        const scrollTimeline = new ScrollTimeline({scrollSource, timeRange});
+
+        for (const span of spans) {
+          const gradientEffect = new KeyframeEffect(
+            span,
+            [
+              {'background-position': '0 0'},
+              {'background-position': '0 100%'},
+              {'background-position': '0 0'},
+            ],
+            {
+              duration: 1000,
+              fill: 'both',
+            }
+          );
+
+          console.log(gradientEffect);
+
+          new WorkletAnimation(
+            'gradient',
+            gradientEffect,
+            scrollTimeline,
+            [],
+          ).play();
+        }
+        // const gradneitEffect = new KeyframeEffect
+      }
+
+      window.addEventListener('DOMContentLoaded', () => {
+        init();
+      });
     </script>
     <style>
-      
+      :root {
+        --gradient-start: var(--animation);
+        --gradient-middle: var(--worklets);
+        --gradient-end: var(--props);
+      }
+
+/*      body {
+        width: 100%;
+        margin: 0 auto;
+        height: 100vh;
+        overflow-y: auto;
+        backface-visibility: hidden;
+        overflow-x: hidden;
+      }*/
+
+      main {
+        min-height: 100vh;
+      }
+/*
+      header {
+        background: black;
+        padding: .25rem;
+        line-height: 1;
+      }
+
+      h1 {
+        padding: 0;
+        margin: 0;
+        text-align: center;
+      }*/
+
+      .anim-span {
+        font-family: 'Faster One', cursive;
+        font-weight: normal;
+        background: black;
+        display: inline-block;
+        text-align: center;
+      }
+
+      .anim-span--gradient {
+        text-align: center;
+        line-height: 1;
+        background-image: linear-gradient(to bottom, var(--gradient-start), var(--gradient-middle), var(--gradient-end));
+  background-size: 400% 400%;
+        -webkit-background-clip: text;
+        color: transparent;
+        word-break: break-all;
+
+      }
     </style>
 </head>
-<body>
+<body class="animation">
+  <header>
+    <h1><span class="anim-span"><span class="anim-span--gradient">Animation API</span></span></h1>
+  </header>
+  <main></main>
   <footer class="body-footer">
     <nav class="container">
       <ul>

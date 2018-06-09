@@ -47,6 +47,10 @@ body {
   --prime-color: #{$props};
 }
 
+.animation {
+  --prime-color: #{$animation};
+}
+
 h1 {
   font-size: calc(2em + 7vh);
   padding: .25rem;
@@ -214,6 +218,10 @@ nav a {
 
   .props & {
     @include anchorStyle($props, $grey);
+  }
+
+  .animation & {
+    @include anchorStyle($animation, $black);
   }
 }
 
