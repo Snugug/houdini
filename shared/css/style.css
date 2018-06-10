@@ -6,8 +6,8 @@
   --typed: #44A384;
   --props: #AF499C;
   --paint: #784ca5;
-  --animation: #F4EC66;
-  --layout: #CBE961;
+  --animation: #CBE961;
+  --layout: #F4EC66;
   --black: #272822; }
 
 *,
@@ -33,7 +33,7 @@ body {
   --prime-color: #AF499C; }
 
 .animation {
-  --prime-color: #F4EC66; }
+  --prime-color: #CBE961; }
 
 h1 {
   font-size: calc(2em + 7vh);
@@ -225,17 +225,17 @@ nav a {
   .animation p a::before, .animation
   cite a::before, .animation
   nav a::before {
-    border-color: #F4EC66; }
+    border-color: #CBE961; }
   .animation p a::after, .animation
   cite a::after, .animation
   nav a::after {
-    background: rgba(244, 236, 102, 0.7); }
+    background: rgba(203, 233, 97, 0.7); }
   .animation p a:hover, .animation p a:focus, .animation
   cite a:hover, .animation
   cite a:focus, .animation
   nav a:hover, .animation
   nav a:focus {
-    --shadow-color: #F4EC66;
+    --shadow-color: #CBE961;
     color: #272822; }
 
 .try-it-out {
