@@ -1,9 +1,9 @@
 registerAnimator('parallax', class {
   constructor(options) {
+    this._rate = options.rate;
   }
 
   animate(currentTime, effect) {
-    console.log(currentTime);
-    effect.localTime = currentTime;
+    effect.localTime = currentTime * this._rate;
   }
 });

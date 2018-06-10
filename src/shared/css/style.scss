@@ -230,7 +230,7 @@ nav a {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   grid-gap: 1em;
-  border: 3px dashed var(--brush-color);
+  border: 3px dashed var(--prime-color);
   padding: .5em .75em;
 
   @media (min-width: 66em) {
