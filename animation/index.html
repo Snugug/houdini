@@ -16,32 +16,51 @@
 
       async function init() {
         await animationWorklet.addModule('/animation/gradient.js');
-        const spans = document.querySelectorAll('.animation-header h1 .anim-span--gradient');
+
+        const header = document.querySelector('.animation-header');
         const scrollSource = document.scrollingElement;
         const timeRange = 1000;
         const scrollTimeline = new ScrollTimeline({scrollSource, timeRange});
 
-        for (const span of spans) {
-          console.log(span);
-          const gradientEffect = new KeyframeEffect(
-            span,
-            [
-              {transform: 'scale(1)'},
-              {transform: 'scale(.25)'},
-              {transform: 'scale(1)'}
-            ],
-            {
-              duration: timeRange,
-            }
-          );
+        const headerEffect = new KeyframeEffect(
+          header,
+          [
+            {transform: 'scale(2)'},
+            {transform: 'scale(.25)'}
+          ],
+          {
+            duration: timeRange,
+          }
+        );
 
-          new WorkletAnimation(
-            'gradient',
-            gradientEffect,
-            scrollTimeline,
-            {},
-          ).play();
-        }
+        new WorkletAnimation(
+          'gradient',
+          headerEffect,
+          scrollTimeline,
+          {},
+        ).play();
+
+        // for (const span of spans) {
+        //   console.log(span);
+        //   const gradientEffect = new KeyframeEffect(
+        //     span,
+        //     [
+        //       {transform: 'scale(1)'},
+        //       {transform: 'scale(.25)'},
+        //       {transform: 'scale(1)'}
+        //     ],
+        //     {
+        //       duration: timeRange,
+        //     }
+        //   );
+
+        //   new WorkletAnimation(
+        //     'gradient',
+        //     gradientEffect,
+        //     scrollTimeline,
+        //     {},
+        //   ).play();
+        // }
         // const gradneitEffect = new KeyframeEffect
       }
 
@@ -58,13 +77,14 @@
 
 
       .animation-header {
-        background: var(--black);
+        background: red;
         padding: .25rem;
-        min-height: 25vh;
-        height: auto;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        min-height: unset;
+        height: unset;
+        position: fixed;
+        /*display: flex;*/
+        /*align-items: center;*/
+        /*justify-content: center;*/
       }
       .animation-header h1 {
         margin: 0;
@@ -72,7 +92,6 @@
         /*word-break: break-all;*/
         text-align: center;
         font-size: calc(1.75em + 7vw);
-        text-align: center;
       }
 
 
@@ -119,7 +138,7 @@
 </head>
 <body class="animation">
   <header class="animation-header">
-    <h1><span class="anim-span"><span class="anim-span--gradient">Animation API</span></span></h1>
+    <h1>Animation Worklet</h1>
   </header>
   <main>
     <article class="container">

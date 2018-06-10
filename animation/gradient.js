@@ -1,4 +1,4 @@
-registerAnimator('parallax', class {
+registerAnimator('gradient', class {
   constructor(options) {
   }
 
