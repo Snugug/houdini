@@ -24,6 +24,8 @@
         const background = document.querySelector('.background');
         const midground = document.querySelector('.midground');
         const foreground = document.querySelector('.foreground');
+        const magic = document.querySelector('.do-magic');
+        const rabbit = document.querySelector('.magic--rabbit');
         const bottom = document.querySelector('.bottom');
         const scrollSource = document.scrollingElement;
         const timeRange = 1000;
@@ -142,6 +144,38 @@
             rate: 1
           },
         ).play();
+
+        magic.addEventListener('click', () => {
+          const rabbitRange = document.scrollingElement.offsetHeight;
+          const offset = rabbit.getBoundingClientRect().top + document.documentElement.scrollTop;
+
+          const rabbitTimeline = new ScrollTimeline({
+            scrollSource,
+            timeRange: rabbitRange,
+            startScrollOffset: offset,
+          });
+
+          const rabbitWorklet = new WorkletAnimation(
+            'parallax',
+            new KeyframeEffect(
+              rabbit,
+              [
+                {transform: 'scale(.5) translateY(5ch)'},
+                {transform: 'scale(3) translateY(-100vh)'}
+              ],
+              {
+                duration: rabbitRange,
+              }
+            ),
+            rabbitTimeline,
+            {
+              rate: 1.5
+            },
+          );
+          // console.log(scrollSource.offsetTop);
+          // console.log(document.documentElement.scrollTop)
+          rabbitWorklet.play();
+        });
       }
 
       window.addEventListener('DOMContentLoaded', () => {
@@ -174,7 +208,7 @@
 
       .landscape {
         width: 100vw;
-        height: 47vw;
+        height: 45vw;
         position: relative;
         overflow: hidden;
         background-image: linear-gradient(to bottom, #67B7AF, #3F988F 90%, var(--grey) 90%);
@@ -216,8 +250,77 @@
         position: absolute;
         width: 150vw;
         bottom: 0;
-        left: -1em;
-        height: 1em;
+        left: -1rem;
+        height: 1rem;
+      }
+
+      .try-it-out {
+        grid-template-columns: 1fr;
+      }
+
+      @media (min-width: 29em) {
+        .try-it-out {
+          grid-template-columns: 1fr 15ch;
+        }
+      }
+
+      .magic {
+        width: 15ch;
+        height: 15ch;
+        position: relative;
+        z-index: 5;
+        align-self: end;
+        justify-self: center;
+        /*overflow: hidden;*/
+      }
+
+      .magic--tophat-front {
+        position: absolute;
+        bottom: 0;
+        width: 15ch;
+        height: 15ch;
+        z-index: 101;
+      }
+
+      .magic--rabbit {
+        position: absolute;
+        top: 0;
+        left: calc(50% - 4.5ch);
+        width: 9ch;
+        height: 9ch;
+        z-index: 100;
+        transform: scale(.5) translateY(10ch);
+      }
+
+      .magic--tophat-back {
+        position: absolute;
+        top: 0;
+        width: 15ch;
+        height: 15ch;
+        z-index: 0;
+      }
+
+      .try-it-out {
+        position: relative;
+      }
+
+      .do-magic {
+        position: absolute;
+        height: 15ch;
+        width: 15ch;
+        background: transparent;
+        border: none;
+        right: 18.5ch;
+        top: -6.5ch;
+        z-index: 3;
+        transition: transform .1s linear;
+        outline: none;
+      }
+
+      .do-magic:hover,
+      .do-magic:focus {
+        cursor: pointer;
+        transform: rotate(35deg);
       }
     </style>
 </head>
@@ -311,23 +414,96 @@
   </header>
   <main>
     <article class="container">
-      <p>The <a href="https://github.com/wicg/animation-worklet/">CSS Animation Worklet API</a>, or more succinctly, the <span class="anim-span"><span class="anim-span--gradient">Animation API</span></span>, gives us the ability to drive <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyframeEffect">KeyframeEffect Animations</a> based on user input, like scrolling, in a standard, non-blocking way!</p>
+      <p>The <a href="https://github.com/wicg/animation-worklet/">CSS Animation Worklet API</a>, or more succinctly, the <span class="anim-span">Animation API</span>, gives us the ability to drive <a href="https://developer.mozilla.org/en-US/docs/Web/API/KeyframeEffect">KeyframeEffect Animations</a> based on user input, like scrolling, in a standard, non-blocking way!</p>
       <ul>
         <li>Listen for user input, like scroll events!</li>
         <li>Animate elements based on that user input</li>
         <li>Do it all of the main thread!</li>
-        <li><span class="anim-span"><span class="anim-span--gradient">Animation API</span></span>: Make Parallax Perform</li>
+        <li><span class="anim-span">Animation API</span>: Make Parallax Perform</li>
       </ul>
       <section class="try-it-out">
         <div class="try-it-out--explain">
           <h3 id="quick-try">Try it out!</h3>
-          <p>The parallax you see is being animated by an <span class="anim-span"><span class="anim-span--gradient">Animation API</span></span> worklet! Scroll up and down to see it change!</p>
+          <p>Take a close look at the hills and sun in the header; that parallax is being powered by an <span class="anim-span">Animation API</span> worklet! Scroll up and down to see it move! Wanna do some magic? Scroll the magic hat until its just off screen, click the magic wand, and the scroll up to pull a rabbit from your hat!</p>
         </div>
+        <div class="magic">
+          <button class="do-magic">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 59.9 59.9">
+              <path d="M59.1.8C58-.3 56.2-.3 55.2.8L.8 55.2c-1.1 1.1-1.1 2.9 0 3.9 1.1 1.1 2.9 1.1 3.9 0l6.9-6.9 7.6-7.6L59.1 4.8c1.1-1.1 1.1-2.9 0-4zm-3.2.7c.7-.7 1.8-.7 2.5 0s.7 1.8 0 2.5l-4.8 4.8c-.7.7-1.8.7-2.5 0s-.7-1.8 0-2.5l4.8-4.8zM4.2 58.2c-.7.7-1.8.7-2.5 0s-.7-1.8 0-2.5l4.8-4.8c.1-.1.2-.2.4-.3.1.6.3 1.2.8 1.6.5.5 1 .7 1.6.8-.1.1-.2.3-.3.4l-4.8 4.8z"/>
+            </svg>
+          </button>
+            <div class="magic--tophat-front">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 468 444">
+                <path d="M234.1 207.5c-45.6 0-88.1-5.8-124.1-15.8l-6.3-1.8c-2.7 8.6-5.2 17.1-7.6 25.6 25.8 30.6 74.7 38.9 139.2 38.9s113.5-8.3 139.2-38.9c-2.4-8.7-5-17.5-7.8-26.3-3.1.9-6.3 1.9-9.5 2.8-35.7 9.8-77.9 15.5-123.1 15.5z" fill="var(--grey)" stroke="var(--black)" stroke-width="3" stroke-miterlimit="10"/>
+                <path d="M235.4 254.5c-64.5 0-113.5-8.3-139.2-38.9-13.2 48-20.3 93.9-20.3 123.1 0 86.2 62 105.2 159.5 105.2s159.5-19 159.5-105.2c0-29.2-7.1-75.1-20.3-123.1-25.8 30.6-74.8 38.9-139.2 38.9zM468 103.5h-62.3v.5c0 12.5-6.7 24.4-18.6 34.9-10.9 9.6-26.2 18.1-44.7 24.9-30.3 11.2-69.3 17.9-111.7 17.9-40.2 0-77.2-6-106.8-16.1-17.9-6.1-33.1-13.8-44.6-22.5-15.1-11.5-23.8-24.8-23.8-39.1v-.5H.2v.3c0 30.1 29 57.3 75.2 76.2 8.8 3.6 18.3 7 28.4 9.9l6.3 1.8c36 10 78.5 15.8 124.1 15.8 45.2 0 87.4-5.7 123.2-15.6 3.2-.9 6.4-1.8 9.5-2.8 8.8-2.7 17.2-5.6 25-8.8 46.8-19 76.2-46.3 76.2-76.6-.1 0-.1-.1-.1-.2z" fill="var(--black)"/>
+              </svg>
+            </div>
+            <div class="magic--rabbit">
+              <svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 208 317">
+                <style>
+                  .st0{fill:#fff}.st1,.st2,.st3,.st4{fill:none;stroke:#751a1b;stroke-width:3;stroke-miterlimit:10}.st2,.st3,.st4{fill:#fff}.st3,.st4{fill:#fbb98d}.st4{fill:#fff;stroke-linecap:round}.st5{fill:#751a1b}.st6{fill:none;stroke:#751a1b;stroke-width:3;stroke-linecap:round;stroke-miterlimit:10}
+                </style>
+                <path class="st0" d="M139 248.5l1.7 2.9 3 2.2-.2 3 1.6 2.3 2.6 1.3.2 3.6h3.5l2.3 1.1 2 2.3 2.6 1.3 2.9.6 3 .8 3-1 3.2-.2 1.6-3.4 3.3-.5-.7-4.7 2.7-1.3 3.9-1.2-.5-3.4-1.4-3.1 3-2.6-1.6-2.8v-2.9l-2.3-2.2-.2-3.1-3.6-.6-1.4-2.2-.6-3.9-3-.8-2.9-.5-3 1.3-2.5-3-3.1-.4-2.4 2.5-3.3-.5-1.7 2.8-3.4.3.3 4.2-2.9 1.2-3 1.7.6 3.4-2.4 2.4z"/>
+                <path class="st1" d="M139 248.5l1.7 2.9 3 2.2-.2 3 1.6 2.3 2.6 1.3.2 3.6h3.5l2.3 1.1 2 2.3 2.6 1.3 2.9.6 3 .8 3-1 3.2-.2 1.6-3.4 3.3-.5-.7-4.7 2.7-1.3 3.9-1.2-.5-3.4-1.4-3.1 3-2.6-1.6-2.8v-2.9l-2.3-2.2-.2-3.1-3.6-.6-1.4-2.2-.6-3.9-3-.8-2.9-.5-3 1.3-2.5-3-3.1-.4-2.4 2.5-3.3-.5-1.7 2.8-3.4.3.3 4.2-2.9 1.2-3 1.7.6 3.4-2.4 2.4z"/>
+                <path class="st0" d="M52.4 244.5c-11 24 2.2 40 15.5 50 14.2 10 28.4 14 39.8 14 11.3 0 25.6-4 39.8-14 13.3-10 26.5-26 15.5-50-4.3-12-10.9-23.5-15-33.9-4.4-10.4-6.4-19.8-8.4-27.7-2.3-15.7-11-25.5-31.8-25.5s-29.5 9.7-31.9 25.5c-1.9 7.9-3.9 17.2-8.3 27.7-4.3 10.4-10.8 21.9-15.2 33.9z"/>
+                <path class="st1" d="M52.4 244.5c-11 24 2.2 40 15.5 50 14.2 10 28.4 14 39.8 14 11.3 0 25.6-4 39.8-14 13.3-10 26.5-26 15.5-50-4.3-12-10.9-23.5-15-33.9-4.4-10.4-6.4-19.8-8.4-27.7-2.3-15.7-11-25.5-31.8-25.5s-29.5 9.7-31.9 25.5c-1.9 7.9-3.9 17.2-8.3 27.7-4.3 10.4-10.8 21.9-15.2 33.9z"/>
+                <path class="st2" d="M44.1 55.9c9.9 28.3 28 47.7 40.4 43.3S99 68.4 89.1 40.1 68.9 14.9 56.5 19.2s-22.3 8.4-12.4 36.7z"/>
+                <ellipse transform="rotate(-19.317 66.56 47.9)" class="st3" cx="66.6" cy="47.9" rx="16.3" ry="42.4"/>
+                <path class="st4" d="M81.3 23.9c-5.9-9.6-20-16.6-33.1-18.4-16-2.3-32 1-41 41-6 26.5-8.6 86 5 104 9.7 12.8 25.4-77.6 44-87 16-8.1 24.1-16.2 26.9-23.7"/>
+                <path class="st2" d="M163.6 53.9c-9.9 28.3-28 47.7-40.4 43.3s-14.5-30.8-4.5-59.1c9.9-28.3 20.2-25.3 32.6-20.9s22.2 8.4 12.3 36.7z"/>
+                <ellipse transform="rotate(-70.683 141.116 45.9)" class="st3" cx="141.1" cy="45.9" rx="42.4" ry="16.3"/>
+                <path class="st0" d="M109.2 206.9c-52.4 0-79-18.6-79-55.3 0-20.3 8-42.4 21.4-59.1 15.1-18.8 35.5-29.1 57.6-29.1s42.6 10.3 57.6 29.1c13.4 16.7 21.4 38.7 21.4 59.1 0 36.7-26.6 55.3-79 55.3z"/>
+                <path class="st5" d="M109.2 65c21.6 0 41.7 10.1 56.5 28.5 13.2 16.4 21 38.1 21 58.1 0 18.6-6.7 32.1-20.3 41.1-12.9 8.5-32.1 12.7-57.2 12.7s-44.3-4.3-57.2-12.7c-13.7-9-20.3-22.4-20.3-41.1 0-20 7.9-41.7 21-58.1C67.5 75.1 87.5 65 109.2 65m0-3c-49.5 0-80.5 49.2-80.5 89.7s31 56.8 80.5 56.8 80.5-16.4 80.5-56.8-31-89.7-80.5-89.7z"/>
+                <g>
+                  <circle class="st5" cx="131.2" cy="136.5" r="11.5"/>
+                  <circle class="st0" cx="127.7" cy="134" r="3"/>
+                </g>
+                <g>
+                  <circle class="st5" cx="68.2" cy="138.5" r="11.5"/>
+                  <circle class="st0" cx="64.7" cy="136" r="3"/>
+                </g>
+                <g>
+                  <path class="st5" d="M86.7 172c0 3.3 10.5 6 10.5 6s10.5-2.7 10.5-6-4.7-6-10.5-6-10.5 2.7-10.5 6z"/>
+                  <path class="st6" d="M97.2 177.5c0 2.8-6 13-19 5M98.2 177.5c0 2.8 6 13 19 5"/>
+                </g>
+                <g>
+                  <path class="st0" d="M156.7 309.6c-1.5 0-3.2-.3-5-.8-4.8-1.3-7.7-3.6-9.2-7-2-4.4-1.7-10.9.7-19.5 5.6-20 19.3-41.1 26.6-41.1.3 0 .6 0 .9.1 3.3.9 5.6 7.6 5.9 17.8.4 9.9-1.1 21.9-3.7 31.5-5 17-11.6 19-16.2 19z"/>
+                  <path class="st5" d="M169.6 242.7c.2 0 .3 0 .5.1 2.1.6 4.5 5.9 4.8 16.4.4 9.7-1.1 21.6-3.7 31-4.5 16.1-10.5 17.9-14.6 17.9-1.4 0-2.9-.2-4.6-.7-7-1.9-12.7-6.3-7.5-24.7 2.5-9 7.1-19.2 12.2-27.3 6-9.4 10.7-12.7 12.9-12.7m0-3c-9.1 0-22.8 23.7-28 42.2-5.4 19.5.6 25.9 9.6 28.4 1.8.5 3.7.8 5.4.8 6.9 0 13.2-4.7 17.5-20.1 5.4-19.5 5.8-48.6-3.2-51.2-.4-.1-.8-.1-1.3-.1z"/>
+                  <path class="st2" d="M137.2 304c0-7.5 9.2-18.5 20.5-18.5s20.5 11 20.5 18.5-9.2 6.5-20.5 6.5-20.5 1-20.5-6.5z"/>
+                  <path class="st2" d="M149.2 305.5c0 5.5 4.4 5 8.5 5s8.5.5 8.5-5-4.4-19-8.5-19-8.5 13.5-8.5 19z"/>
+                  <g>
+                    <path class="st0" d="M56.7 309.6c-4.6 0-11.3-2-16.1-19-2.7-9.5-4.1-21.6-3.7-31.5.4-10.2 2.6-16.9 5.9-17.8.3-.1.6-.1.9-.1 7.3 0 21 21.1 26.6 41.1 2.4 8.6 2.6 15.2.7 19.5-1.6 3.5-4.5 5.7-9.2 7-1.9.6-3.6.8-5.1.8z"/>
+                    <path class="st5" d="M43.7 242.7c2.2 0 7 3.3 12.9 12.8 5.1 8.1 9.7 18.3 12.2 27.3 5.2 18.4-.6 22.8-7.5 24.7-1.7.5-3.2.7-4.6.7-4.1 0-10.1-1.9-14.6-17.9-2.6-9.4-4-21.3-3.7-31 .4-10.5 2.7-15.8 4.8-16.4.2-.2.4-.2.5-.2m0-3c-.4 0-.9.1-1.3.2-9 2.5-8.7 31.7-3.2 51.2 4.3 15.5 10.6 20.1 17.5 20.1 1.8 0 3.6-.3 5.4-.8 9-2.5 15-9 9.6-28.4-5.1-18.7-18.9-42.3-28-42.3z"/>
+                    <path class="st2" d="M76.2 304c0-7.5-9.2-18.5-20.5-18.5s-20.5 11-20.5 18.5 9.2 6.5 20.5 6.5 20.5 1 20.5-6.5z"/>
+                    <path class="st2" d="M64.2 305.5c0 5.5-4.4 5-8.5 5s-8.5.5-8.5-5 4.4-19 8.5-19 8.5 13.5 8.5 19z"/>
+                  </g>
+                  <g>
+                    <path class="st2" d="M119.6 248.5c-.9 4.9-1.5 10.3-1.5 16 0 22.6-.6 41 9.6 41s20.9-18.4 20.9-41c0-13.1-.6-24.8-3.1-32.3"/>
+                    <path class="st2" d="M108.2 308c0-7.5 9.2-18.5 20.5-18.5s20.5 11 20.5 18.5-9.2 6.5-20.5 6.5-20.5 1-20.5-6.5z"/>
+                    <path class="st2" d="M120.2 309.5c0 5.5 4.4 5 8.5 5s8.5.5 8.5-5-4.4-19-8.5-19c-4.2 0-8.5 13.5-8.5 19z"/>
+                    <g>
+                      <path class="st2" d="M93.7 248.5c.9 4.9 1.5 10.3 1.5 16 0 22.6.6 41-9.6 41s-20.9-18.4-20.9-41c0-13.1.6-24.8 3.1-32.3"/>
+                      <path class="st2" d="M105.2 308c0-7.5-9.2-18.5-20.5-18.5s-20.5 11-20.5 18.5 9.2 6.5 20.5 6.5 20.5 1 20.5-6.5z"/>
+                      <path class="st2" d="M93.2 309.5c0 5.5-4.4 5-8.5 5s-8.5.5-8.5-5 4.4-19 8.5-19 8.5 13.5 8.5 19z"/>
+                    </g>
+                  </g>
+                </g>
+                <path class="st4" d="M126.4 21.9c5.9-9.6 20-16.6 33.1-18.4 16-2.3 32 1 41 41 6 26.5 8.6 86-5 104-9.7 12.8-25.4-77.6-44-87-16-8.1-24.1-16.2-26.9-23.7"/>
+              </svg>
+
+            </div>
+            <div class="magic--tophat-back">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 468 444">
+                <path d="M112.6 46.6c31.1-12.6 72.6-20.3 118-20.3 49.3 0 93.8 9 125.7 23.6 30.4 13.9 49.2 32.8 49.5 53.6H468c-.2-41.4-55.2-77.2-134.6-93.7C303.2 3.5 269.6 0 234.1 0c-36 0-70 3.6-100.5 10C54.9 26.7.4 62.3.2 103.5h55.3c.3-22.5 22.2-42.8 57.1-56.9z" fill="var(--black)"/>
+                <path d="M405.7 103.5c-.3-20.8-19.1-39.7-49.5-53.6-31.8-14.5-76.4-23.6-125.7-23.6-45.5 0-86.9 7.7-118 20.3-34.8 14.1-56.7 34.4-57 56.9v.5c0 14.3 8.7 27.6 23.8 39.1 11.5 8.7 26.6 16.3 44.6 22.5 29.6 10.1 66.6 16.1 106.8 16.1 42.5 0 81.4-6.7 111.7-17.9 18.5-6.8 33.8-15.3 44.7-24.9 11.9-10.5 18.6-22.3 18.6-34.9v-.5z" fill="var(--animation)"/>
+              </svg>
+            </div>
+          </div>
       </section>
     </article>
     <article class="container">
-      <h2 id="worklet"><span class="anim-span"><span class="anim-span--gradient">Animation API</span></span> Worklet</h2>
-      <p>The <span class="anim-span"><span class="anim-span--gradient">Animation API</span></span> works a little different than both the <a href="/paint">Paint API</a> and the <a href="/layout">Layout API</a> in that it isn't a "set it and forget it" worklet, but rather it gets loaded and then used by creating a new <code>WorkletAnimation</code> which consists of the name of the registered worklet to use, the <code>KeyframeEffect</code> to apply, at least one timeline to base the animation on (like the new <a href="https://github.com/wicg/animation-worklet/#scrolltimeline">ScrollTimeline</a>), and options to pass in to the worklet's constructor.</p>
+      <h2 id="worklet"><span class="anim-span">Animation API</span> Worklet</h2>
+      <p>The <span class="anim-span">Animation API</span> works a little different than both the <a href="/paint">Paint API</a> and the <a href="/layout">Layout API</a> in that it isn't a "set it and forget it" worklet, but rather it gets loaded and then used by creating a new <code>WorkletAnimation</code> which consists of the name of the registered worklet to use, the <code>KeyframeEffect</code> to apply, at least one timeline to base the animation on (like the new <a href="https://github.com/wicg/animation-worklet/#scrolltimeline">ScrollTimeline</a>), and options to pass in to the worklet's constructor.</p>
       <p><strong>Worklet Overview</strong></p>
       <pre><code class="language-js">// https://wicg.github.io/animation-worklet/ April 7, 2018 Draft Community Group Report
 
@@ -355,7 +531,10 @@ const scrollSource = document.scrollingElement;
 // Number of steps our animation will be broken up in to
 const timeRange = 1000;
  // A new ScrollTimeline to use! Listen to scroll on the `scrollSource`, divide everything in to `timeRage` pieces, optionally start at `startScrollOffset` and end at `endScrollOffset`
-const scrollTimeline = new ScrollTimeline({scrollSource, timeRange});
+const scrollTimeline = new ScrollTimeline({
+  scrollSource,
+  timeRange,
+});
 
 const effectKeyframes = new KeyframeEffect(
   elem,
@@ -382,6 +561,7 @@ new WorkletAnimation(
   // Options to pass in to Animation Worklet constructor
   {},
 ).play(); // Make It So</code></pre>
+      <p>Today, the <span class="anim-span">Animation API</span> will only animate fast properties (like <code>opacity</code> and <code>transform</code>) and only items that can be composited (so no direct SVGs)</p>
     </article>
   </main>
   <footer class="body-footer">
