@@ -14,6 +14,7 @@
       import Editor from '/shared/editor.js';
       import REPL from '/shared/repl.js';
       import '/shared/app.js';
+      import settings from '/layout/settings.js';
 
       CSS.registerProperty({
         name: '--offset',
@@ -58,6 +59,8 @@
         editor.run('.editor', {
           live: true,
         });
+
+        const repl = new REPL('#repl', settings, 'layout');
       });
     </script>
     <style>
@@ -198,6 +201,16 @@ registerLayout('sample-layout', class {
   }
 });</code></pre>
     </article>
+    <article class="container">
+      <h2 id="live-demo">Play with the <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> </h2>
+
+      <p>Now it's your turn! Below are two examples of the <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> in action, each showcasing something a little different, for you to see and play with! The <strong>Centered Blocks</strong> example is fairly basic, showing how to use input and child input properties to lay items out stacked one on top of another, centered. The <strong>Masonry</strong> example comes from <a href="https://github.com/GoogleChromeLabs/houdini-samples">Google Chrome Labs</a> and is, well, masonry!</p>
+
+      <p>Each one of these examples are fully editable, and you'll see the changes live as you type! You can change the Worklet code, the userland JavaScript, the CSS, and the HTML. Worklets get added automagically, and the userland JavaScript runs after its loaded.</p>
+
+      <p>You're preloaded with the <strong>Centered Blocks</strong> example. Use the other buttons to switch examples. The <strong>Custom</strong> button will give you a blank <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> worklet scaffolding to start from for you to experiment from scratch!</p>
+    </article>
+    <div id="repl"></div>
   </main>
 
   <footer class="body-footer">
