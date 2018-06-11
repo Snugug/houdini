@@ -274,6 +274,9 @@ nav a {
   to {
     visibility: hidden; } }
 
+.glitchButton {
+  z-index: 9999; }
+
 /* Banner Component */
 .banner {
   background-color: var(--banner-color);

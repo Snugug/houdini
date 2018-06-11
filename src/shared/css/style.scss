@@ -272,5 +272,11 @@ nav a {
   }
 }
 
+.glitchButton {
+  z-index: 9999;
+}
+
 @import 'partials/banner';
 @import 'partials/title';
+
+
