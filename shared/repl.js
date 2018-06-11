@@ -157,13 +157,35 @@ export default class {
       delete editors.worklet;
     }
 
-    resetEditors(optkey[0]);
+    try {
+      const data = JSON.parse(atob(window.location.search.replace('?data=', '')));
+
+      console.log(data);
+
+      options.custom = data;
+
+      menuHandler({
+        target: document.querySelector('.repl--menu-item[data-type="custom"]'),
+      });
+    } catch(e) {
+      resetEditors(optkey[0]);
+    }
+
 
     function resetEditors(base) {
       const first = options[base];
 
-      replTitle.textContent = first.name;
-      replFeatures.textContent = first.features.join(', ');
+      replTitle.innerText = first.name;
+      replFeatures.innerText = first.features.join(', ');
+
+      for (const replMenuItem of document.querySelectorAll('.repl--menu-item')) {
+        if (replMenuItem.hasAttribute('data-active')) {
+          replMenuItem.removeAttribute('data-active');
+        }
+      }
+
+      document.querySelector(`.repl--menu-item[data-type="${base}"`).setAttribute('data-active', true);
+
 
       for (key in first) {
         if (editors[key]) {
@@ -212,8 +234,24 @@ export default class {
     function replPreview() {
       const vals = {};
 
+      const active = document.querySelector('.repl--menu-item[data-active]').getAttribute('data-type');
+
+
       for (const editor in editors) {
         vals[editor] = editors[editor].value;
+      }
+
+      if (active === 'custom') {
+        const save = Object.assign({}, vals);
+
+        save.name = replTitle.innerText;
+        save.features = [replFeatures.textContent];
+
+        const output = btoa(JSON.stringify(save));
+        const toPush = new URL(window.location);
+
+        toPush.search = `?data=${output}`;
+        window.history.pushState('', '', toPush.toString());
       }
 
       let worklet = '';
