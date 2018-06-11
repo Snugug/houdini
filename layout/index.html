@@ -1,23 +1,205 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Houdini Worklets</title>
+    <title>Houdini Layout API</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="/shared/css/style.css">
     <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i" rel="stylesheet">
 
-    <link href="https://fonts.googleapis.com/css?family=Black+Ops+One&text=Worklets" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Fredericka+the+Great&text=LAYOUTAPIayout" rel="stylesheet">
 
     <script type="module">
+      import Editor from '/shared/editor.js';
+      import REPL from '/shared/repl.js';
       import '/shared/app.js';
+
+      CSS.registerProperty({
+        name: '--offset',
+        syntax: '<number>',
+        inherits: true,
+        initialValue: .25,
+      });
+
+      CSS.registerProperty({
+        name: '--padding',
+        syntax: '<number>',
+        inherits: true,
+        initialValue: 5,
+      });
+
+      CSS.registerProperty({
+        name: '--art-color',
+        syntax: '<color>',
+        inherits: false,
+        initialValue: 'white',
+      });
+
+      CSS.registerProperty({
+        name: '--art-steps',
+        syntax: '<number>',
+        inherits: false,
+        initialValue: 40,
+      });
+
+      CSS.registerProperty({
+        name: '--art-alpha',
+        syntax: '<number>',
+        inherits: false,
+        initialValue: 1,
+      });
+
+      CSS.layoutWorklet.addModule('/layout/blueprint.js');
+      CSS.paintWorklet.addModule('/layout/holman.js');
+
+      window.addEventListener('DOMContentLoaded', () => {
+        const editor = new Editor;
+        editor.run('.editor', {
+          live: true,
+        });
+      });
     </script>
     <style>
-      
+      .bp {
+        background-color: var(--layout);
+        color: var(--grey);
+        height: auto;
+        padding: 5rem;
+        --art-alpha: .05;
+        --art-color: rgba(249, 249, 249, .05);
+        --art-steps: 80;
+        background-image: paint(holman);
+      }
+
+      .layout-api {
+        display: layout(blueprint);
+        --padding: 5;
+        --offset: .25;
+
+        font-family: 'Fredericka the Great', cursive;
+        font-weight: normal;
+        margin: 0;
+        max-width: 35ch;
+        margin: 0 auto;
+      }
+
+      .bp--container span {
+        text-align: center;
+      }
+
+      .layout-name {
+        font-family: 'Fredericka the Great', cursive;
+        font-weight: normal;
+        margin: 0;
+        color: var(--layout);
+        /*padding: 0 .5em;*/
+  /*      --art-alpha: .05;
+        --art-color: rgba(249, 249, 249, .05);
+        --art-steps: 10;*/
+        /*background: paint(holman), var(--layout);*/
+        /*border-radius: 5px;*/
+      }
     </style>
 </head>
-<body>
+<body class="layout">
+  <header class="bp">
+    <h1 class="layout-api"><span>L</span><span>A</span><span>Y</span><span>O</span><span>U</span><span>T</span><span> </span><span>A</span><span>P</span><span>I</span></h1>
+  </header>
+
+  <main>
+    <article class="container">
+      <p>The <a href="https://drafts.css-houdini.org/css-layout-api/">CSS Layout API Level 1</a>, or <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> for short, lets us play Tetris with our site, unleashing all sorts of new creative possibilities.</p>
+      <ul>
+        <li><em>Literally</em> make your own <code>display</code> properties</li>
+        <li>Pollyfill a layout spec, or build a new one!</li>
+        <li>Everyone likes a good Masonry layout, add one without the normal performance hit!</li>
+      </ul>
+      <section class="try-it-out">
+        <div class="try-it-out--explain">
+          <h3 id="quick-try">Try it out!</h3>
+          <p>The layout of the header is powered by the <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span>! Change the value of <code>--padding</code> and <code>--offset</code> to see how the letters change position!</p>
+        </div>
+        <div class="editor try-it-out--code" data-language="css">.layout-api {
+  display: layout(blueprint);
+  --padding: 5;
+  --offset: .25;
+}</div>
+      </section>
+    </article>
+    <article class="container">
+      <h2 id="layout-concepts"><span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> Concepts</h2>
+      <p>The <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> introduces and uses a number of concepts that may be unfamiliar, so we're going to go over them before diving in.</p>
+      <figure id="layout-overview">
+        <img src="layout.svg" alt="Layout Overview">
+        <figcaption>
+          <p>An overview of how the <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> "thinks". We start at the <strong>Current Layout</strong>, which is the layout algorithm for the current box we're laying out. That element's direct parent, the element with the <code>display: layout(custom)</code> on it that's requesting layout be performed, is the <strong>Parent Layout</strong>. The <strong>Parent Layout</strong> has borders, padding, and scroll bars, and those collectively are its <strong>Layout Edges</strong>; the remaining space after we remove the Layout Edges, where we can actually lay out a Parent Layout's children is the <strong>Layout Constraints</strong>. The <strong>Child Layout</strong> is the layout algorithm for the LayoutChild of the Current Layout (I know, a little confusing, bear with me.</p>
+          <p>The <strong>LayoutChild</strong> is basically a container to calculate stuff from, and only gets generated under <a href="https://drafts.css-houdini.org/css-layout-api/#layout-children">certain conditions</a>. The LayoutChild can be used to generate a <strong>Fragment</strong>, which is used to actually perform layout</p>
+        </figcaption>
+      </figure>
+      <figure id="layout-layoutchild">
+        <img src="LayoutChild.svg" alt="LayoutChild Overview">
+        <figcaption>
+          <p>A LayoutChild has two main bits of functionality; the first is including the <a href="/typed-om">Typed OM</a> <code>styleMap</code> of all properties that the layout says it wants (via <code>childInputProperties</code>) (think like <code>grid-column</code> in CSS Grid for placement). The second is the ability to generate a Fragment by using that information and calculating the <a href="https://drafts.css-houdini.org/css-layout-api/#intrinsic-sizes">Intrinsic Size</a> of the box being laid out. A Fragement's <strong>Intrinsic Size</strong> is two values: the <a href="https://drafts.csswg.org/css-sizing/#min-content-size">min-content-size</a> (smallest a box can be without overflowing, <code>minContentSize</code>), and the <a href="https://drafts.csswg.org/css-sizing/#max-content">max-content-size</a> ("ideal" size of a box given infinite available space, usually smallest it can be while still fitting around its contents, <code>maxContentSize</code>).</p>
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="Fragment.svg" alt="Fragment Overview">
+        <figcaption>
+          <p>Fragments contain the calculated <code>inline</code> and <code>block</code> (which are <a href="https://drafts.csswg.org/css-writing-modes-4/#abstract-dimnsions">abstract dimensions</a>) offsets and sizes. The sizes are calculated and cannot be changed, but the offsets aren't! We can set these offsets to position our box around, thus doing a layout!</p>
+        </figcaption>
+      </figure>
+      <figure>
+        <img src="LayoutEdges.svg" alt="Layout Edges Overview">
+        <figcaption>
+          <p>Layout Edges also have <code>inline</code> and <code>block</code> dimensions, for <code>padding</code>, <code>border</code>, and <code>scrollbar</code>. They've got <code>all</code> options to group them all together, and <code>inline</code> and <code>block</code> start and end values.</p>
+        </figcaption>
+      </figure>
+    </article>
+
+    <article class="container">
+      <h2 id="worklet"><span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> Worklet</h2>
+      <p><strong>Register Worklet from Main JavaScript</strong></p>
+      <pre><code class="language-js">await CSS.layoutWorklet.addModule('path/to/layout-worklet.js');</code></pre>
+      <p><strong>Worklet Overview</strong></p>
+      <pre><code class="language-js">// From https://drafts.css-houdini.org/css-layout-api/ April 24, 2018 Editor's Draft
+
+registerLayout('sample-layout', class {
+  // Properties to look for on calling element
+  static get inputProperties() { return ['--foo']; }
+  // Properties to look for on direct child elements
+  static get childrenInputProperties() { return ['--bar']; }
+  // Options for the Layout
+  // `childDisplay` can be 'block' or 'normal'. 'block' is similar to children of flex and grid containers, 'normal'. Otherwise boxes won't be blockified
+  // `sizing` can be 'block-like' or 'manual'. 'block-like' will make the Layout Constraints's inline size be fixed, and block size be calculated like border-box. Otherwise, it's just the calculated inlineSize and blockSize
+  static get layoutOptions() {
+    childDisplay: 'normal',
+    sizing: 'block-like'
+  }
+
+  // Generator functions instead of normal functions to support async/parallel layout engines
+  // Determines how a box fits its content or fits in to our layout context
+  *intrinsicSizes(children, edges, styleMap) {
+    // children - Child elements of box being laid out
+    // edges - Layout Edges of the box being
+    // styleMap - Typed OM style map of box being laid out
+
+    // Intrinsic sizes code goes here.
+  }
+
+  *layout(children, edges, constraints, styleMap, breakToken) {
+    // children - Child elements of Parent Layout
+    // edges - `LayoutEdges` of Parent Layout
+    // constraints - `Layout Constraints` of Parent Layout
+    // styleMap - Typed OM style map of Parent Layout
+    // breakToken - Token (if paginating for printing for example) to resume layout at
+
+    // Layout code goes here.
+  }
+});</code></pre>
+    </article>
+  </main>
+
   <footer class="body-footer">
     <nav class="container">
       <ul>

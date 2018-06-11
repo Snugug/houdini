@@ -1,0 +1,57 @@
+<svg id="Layer_1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 501.5 266.6">
+  <style>
+    .st1{font-family:&apos;ArialMT&apos;}.st2{font-size:16px}.st3{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round}.st4{fill:#fff}.st11{font-size:10px}
+  </style>
+  <path d="M71 57.8h292.5v107.5H71V57.8z" fill="none" stroke="#ff9200" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="16,8,2,8"/>
+  <text transform="translate(164.45 117.55)" class="st1 st2">
+    LayoutEdges
+  </text>
+  <path class="st3" d="M71 54.5v-31h292.5v31.8"/>
+  <path class="st4" d="M182.1 8.1h47.2v31h-47.2v-31z"/>
+  <text transform="translate(187.34 29.55)" class="st1 st2">
+    inline
+  </text>
+  <path class="st3" d="M362.6 165.1h68.9V58.8h-68V48.5"/>
+  <path class="st4" d="M408.5 96.6h47.8v31h-47.8v-31z"/>
+  <text transform="translate(413.5 118.11)" class="st1 st2">
+    block
+  </text>
+  <path d="M73.4 59.8h286.8v103.5H73.4V59.8z" fill="none" stroke="#0030fd" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M77.3 63.5h279v95.7h-279V63.5z" fill="none" stroke="#fd1c00" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <text transform="translate(278.36 257.1)" class="st1 st2" fill="#0433ff">
+    border
+  </text>
+  <path fill="none" stroke="#0030fd" stroke-linecap="round" stroke-linejoin="round" d="M216.9 163.8v89.4h56.3"/>
+  <text transform="translate(298.8 232.1)" class="st1 st2" fill="#ff2600">
+    padding
+  </text>
+  <path fill="none" stroke="#fd1c00" stroke-linecap="round" stroke-linejoin="round" d="M332.4 160.4v50.2"/>
+  <path d="M360.3 57.8h4.6v105.5h-4.6V57.8z"/>
+  <path class="st3" d="M360.3 57.8h4.6v105.5h-4.6V57.8z"/>
+  <text transform="translate(372.8 209.5)" class="st1 st2">
+    scrollbar
+  </text>
+  <path class="st3" d="M362.6 163.3v44.3h4.9"/>
+  <text transform="translate(49.09 15)" class="st1 st11">
+    inlineStart
+  </text>
+  <text transform="translate(330.5 15)" class="st1 st11">
+    inlineEnd
+  </text>
+  <text transform="translate(436.5 72.8)" class="st1 st11">
+    blockStart
+  </text>
+  <text transform="translate(436.5 157.3)" class="st1 st11">
+    blockEnd
+  </text>
+  <path class="st3" d="M352.5 171.8l-.4 14.9h13.5v-14.3m-293-.6l-.3 14.9h8.6l.2-14.2m271.1 14.2H80.9"/>
+  <path class="st4" d="M94.4 171.2h70v31h-70v-31z"/>
+  <text transform="translate(99.41 192.68)" class="st1 st2">
+    all.inline
+  </text>
+  <path class="st3" d="M64.3 59.2H48.5v9h15.8m0 86.4H48.5v9h15.8M48.5 68.2v86.4"/>
+  <path class="st4" d="M0 96h68.3v31H0V96z"/>
+  <text transform="translate(5.3 117.53)" class="st1 st2">
+    all.block
+  </text>
+</svg>
