@@ -3,7 +3,7 @@ $worklets: #F4B766;
 $typed: #44A384;
 $props: #AF499C;
 $paint: #784ca5;
-$layout: #F4EC66;
+$layout: #2E3561;
 $animation: #CBE961;
 $black: #272822;
 
@@ -49,6 +49,10 @@ body {
 
 .animation {
   --prime-color: #{$animation};
+}
+
+.layout {
+  --prime-color: #{$layout};
 }
 
 h1 {
@@ -222,6 +226,10 @@ nav a {
 
   .animation & {
     @include anchorStyle($animation, $black);
+  }
+
+  .layout & {
+    @include anchorStyle($layout, $grey);
   }
 }
 
