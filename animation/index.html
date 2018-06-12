@@ -12,7 +12,8 @@
 
     <script type="module">
       import '/shared/app.js';
-      import Repl from '/shared/repl.js';
+      import settings from '/animation/settings.js';
+      import REPL from '/shared/repl.js';
 
       async function init() {
         await animationWorklet.addModule('/animation/gradient.js');
@@ -180,6 +181,7 @@
 
       window.addEventListener('DOMContentLoaded', () => {
         init();
+        const repl = new REPL('#repl', settings, 'animation');
       });
     </script>
     <style>
