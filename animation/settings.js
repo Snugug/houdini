@@ -88,7 +88,7 @@ new WorkletAnimation('parallax', new KeyframeEffect(
 <div id="two">Two</div>
 <div id="three">Three</div>
 <div id="four">Four</div>
-<img src="bunny.svg" alt="Cute Bunny" id="bunny" />`,
+<img src="/animation/bunny.svg" alt="Cute Bunny" id="bunny" />`,
   },
   twitter: {
     name: 'Twitter Header',
@@ -323,7 +323,7 @@ a {
 .profile {
   position: relative;
   min-height: var(--header-height);
-  background-image: url('landscape.svg');
+  background-image: url('/animation/landscape.svg');
   background-size: auto calc(var(--header-height) / 2);
   background-position: 50% 0%;
   background-repeat: no-repeat;
@@ -394,10 +394,10 @@ a {
   margin-right: 0.2em;
 }
 
-.profile .homepage:before {
-  margin-left: calc(2* var(--spacer));
-  background-image: url('homepage.svg');
-}
+// .profile .homepage:before {
+//   margin-left: calc(2* var(--spacer));
+//   background-image: url('/animation/homepage.svg');
+// }
 
 .profile .stats > * {
   font-weight: bold;
@@ -498,7 +498,7 @@ limitations under the License.
     html: `<div class="bar">
 </div>
 <header class="profile">
-  <img src="bunny.svg" class="avatar">
+  <img src="/animation/bunny.svg" class="avatar">
   <h1 class="name">Houdini Bunny</h1>
   <h2 class="handle">@HoudiniBunny</h2>
   <section class="description">
@@ -519,7 +519,7 @@ limitations under the License.
 </header>
 <section class="tweets">
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta"> <span class="name">Houdini Bunny</span>
       <span class="handle">@HoudiniBunny</span>
       <span class="date">Dec 27</span>
@@ -527,7 +527,7 @@ limitations under the License.
     🐰 New Carrot-🥕 Carrots are yummy! You should eat some
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta">
       <span class="name">Surma</span>
       <span class="handle">@DasSurma</span>
@@ -536,7 +536,7 @@ limitations under the License.
     🐰 New post-🎩 I'm making magic now!
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta"> <span class="name">Houdini Bunny</span>
       <span class="handle">@HoudiniBunny</span>
       <span class="date">Dec 27</span>
@@ -544,7 +544,7 @@ limitations under the License.
     🐰 New Carrot-🥕 Carrots are yummy! You should eat some
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta">
       <span class="name">Surma</span>
       <span class="handle">@DasSurma</span>
@@ -553,7 +553,7 @@ limitations under the License.
     🐰 New post-🎩 I'm making magic now!
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta"> <span class="name">Houdini Bunny</span>
       <span class="handle">@HoudiniBunny</span>
       <span class="date">Dec 27</span>
@@ -561,7 +561,7 @@ limitations under the License.
     🐰 New Carrot-🥕 Carrots are yummy! You should eat some
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta">
       <span class="name">Surma</span>
       <span class="handle">@DasSurma</span>
@@ -570,7 +570,7 @@ limitations under the License.
     🐰 New post-🎩 I'm making magic now!
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta"> <span class="name">Houdini Bunny</span>
       <span class="handle">@HoudiniBunny</span>
       <span class="date">Dec 27</span>
@@ -578,7 +578,7 @@ limitations under the License.
     🐰 New Carrot-🥕 Carrots are yummy! You should eat some
   </section>
   <section class="tweet">
-    <img src="bunny.svg" class="avatar">
+    <img src="/animation/bunny.svg" class="avatar">
     <section class="meta">
       <span class="name">Surma</span>
       <span class="handle">@DasSurma</span>
