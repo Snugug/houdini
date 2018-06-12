@@ -16,6 +16,26 @@
         --arrow-height: 5vh;
         --banner-color: #ccc;
       }
+
+      .video--16-9 {
+        position: relative;
+        height: 0;
+        padding-top: 56.25%;
+        width: 100%;
+      }
+      .video--16-9 > * {
+        display: block;
+        position: absolute;
+        width: 100% !important;
+        height: 100% !important;
+        top: 0;
+        margin: 0;
+        padding: 0;
+      }
+
+      figcaption h3 {
+        margin-top: 1rem;
+      }
     </style>
 </head>
 <body>
@@ -28,7 +48,22 @@
   </header>
 
   <section class="container">
-    <p>Hello World</p>
+    <p>There are a number of great resources available around Houdini that have helped me and likely can help you as you explore Houdini. Smashing Magazine has a <a href="https://www.smashingmagazine.com/2016/03/houdini-maybe-the-most-exciting-development-in-css-youve-never-heard-of/">great Houdini article</a> (unfortunately a little outdated now) that'll give you a good high-level overview. I've also given a talk, <em>Magic Tricks with Houdini</em>, the latest version is embedded, if videos are more your speed</p>
+    <figure class="video">
+      <div class="video--16-9">
+        <iframe width="560" height="315" src="https://www.youtube-nocookie.com/embed/FYWZrLpN5Po?rel=0&showinfo=0" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen></iframe>
+      </div>
+      <figcaption><h3>Magic Tricks with Houdini - Sam Richard</h3></figcaption>
+    </figure>
+    <p>If you're looking for more demos, <a href="https://twitter.com/iamvdo">@iamvdo</a> has some truly fantastic stuff over on his website <a href="https://css-houdini.rocks/">css-houdini.rocks</a>. The Google Chrome Labs team also has a great set of <a href="https://googlechromelabs.github.io/houdini-samples/">demos</a> with <a href="https://github.com/GoogleChromeLabs/houdini-samples">source</a> you can play with. I've personally learned most by tweaking the samples here.</p>
+    <p>Because everyone <em>loves</em> reading the raw specs, and there are lots of them for Houdini, you can find them below:</p>
+    <ul>
+      <li>CSS-Tag Houdini Editor Drafts (<a href="https://drafts.css-houdini.org/">site</a>, <a href="https://github.com/w3c/css-houdini-drafts">source</a>)</li>
+      <li>Web Incubator Community Group Animation Worklet (<a href="https://wicg.github.io/animation-worklet/">site</a>, <a href="https://github.com/wicg/animation-worklet/">source</a>)</li>
+    </ul>
+    <p>Finally, there are people. <a href="https://twitter.com/tabatkins">Tab Atkins</a> is the one responsible for first getting me interested in Houdini and they have their name plastered all over the specs. <a href="https://twitter.com/DasSurma">Surma</a> has been an invaluable resource answering all of my Houdini questions. Surma fingers are all over the Google Chrome Labs demos. Finally, there's <a href="https://twitter.com/bfgeek">Ian Kilpatrick</a> whose actually implementing this stuff in Blink! Ian built the Masonry <a href="/layout">Layout API</a> demo!</p>
+
+    <p>And of course, I'm always happy to chat! <a href="https://twitter.com/snugug">@snugug</a> on Twitter, <a href="https://snugug.com/">the Internet</a>, and in general.</p>
   </section>
 
 

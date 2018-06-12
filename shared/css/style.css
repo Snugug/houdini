@@ -93,7 +93,8 @@ nav ul {
 
 p a,
 cite a,
-nav a {
+nav a,
+li a {
   font-style: italic;
   overflow: hidden;
   position: relative;
@@ -113,7 +114,9 @@ nav a {
   cite a::before,
   cite a::after,
   nav a::before,
-  nav a::after {
+  nav a::after,
+  li a::before,
+  li a::after {
     position: absolute;
     top: 0;
     left: 0;
@@ -124,7 +127,8 @@ nav a {
     z-index: 0; }
   p a::before,
   cite a::before,
-  nav a::before {
+  nav a::before,
+  li a::before {
     border-top: 2px solid black;
     background: transparent;
     transition-delay: .2s;
@@ -133,7 +137,8 @@ nav a {
     z-index: -1; }
   p a::after,
   cite a::after,
-  nav a::after {
+  nav a::after,
+  li a::after {
     z-index: -1;
     transform: translateY(-100%);
     border-radius: 0 0 3px 3px; }
@@ -141,7 +146,9 @@ nav a {
   cite a:hover,
   cite a:focus,
   nav a:hover,
-  nav a:focus {
+  nav a:focus,
+  li a:hover,
+  li a:focus {
     transition-delay: .25s; }
     p a:hover::before, p a:hover::after, p a:focus::before, p a:focus::after,
     cite a:hover::before,
@@ -151,108 +158,140 @@ nav a {
     nav a:hover::before,
     nav a:hover::after,
     nav a:focus::before,
-    nav a:focus::after {
+    nav a:focus::after,
+    li a:hover::before,
+    li a:hover::after,
+    li a:focus::before,
+    li a:focus::after {
       transform: translateX(0) scaleX(1); }
     p a:hover::before, p a:focus::before,
     cite a:hover::before,
     cite a:focus::before,
     nav a:hover::before,
-    nav a:focus::before {
+    nav a:focus::before,
+    li a:hover::before,
+    li a:focus::before {
       transition-delay: .2s; }
     p a:hover::after, p a:focus::after,
     cite a:hover::after,
     cite a:focus::after,
     nav a:hover::after,
-    nav a:focus::after {
+    nav a:focus::after,
+    li a:hover::after,
+    li a:focus::after {
       transition-delay: .3s; }
   .paint p a::before, .paint
   cite a::before, .paint
-  nav a::before {
+  nav a::before, .paint
+  li a::before {
     border-color: #784ca5; }
   .paint p a::after, .paint
   cite a::after, .paint
-  nav a::after {
+  nav a::after, .paint
+  li a::after {
     background: rgba(120, 76, 165, 0.7); }
   .paint p a:hover, .paint p a:focus, .paint
   cite a:hover, .paint
   cite a:focus, .paint
   nav a:hover, .paint
-  nav a:focus {
+  nav a:focus, .paint
+  li a:hover, .paint
+  li a:focus {
     --shadow-color: #784ca5;
     color: #f9f9f9; }
   .worklets p a::before, .worklets
   cite a::before, .worklets
-  nav a::before {
+  nav a::before, .worklets
+  li a::before {
     border-color: #F4B766; }
   .worklets p a::after, .worklets
   cite a::after, .worklets
-  nav a::after {
+  nav a::after, .worklets
+  li a::after {
     background: rgba(244, 183, 102, 0.7); }
   .worklets p a:hover, .worklets p a:focus, .worklets
   cite a:hover, .worklets
   cite a:focus, .worklets
   nav a:hover, .worklets
-  nav a:focus {
+  nav a:focus, .worklets
+  li a:hover, .worklets
+  li a:focus {
     --shadow-color: #F4B766;
     color: #272822; }
   .typed-om p a::before, .typed-om
   cite a::before, .typed-om
-  nav a::before {
+  nav a::before, .typed-om
+  li a::before {
     border-color: #44A384; }
   .typed-om p a::after, .typed-om
   cite a::after, .typed-om
-  nav a::after {
+  nav a::after, .typed-om
+  li a::after {
     background: rgba(68, 163, 132, 0.7); }
   .typed-om p a:hover, .typed-om p a:focus, .typed-om
   cite a:hover, .typed-om
   cite a:focus, .typed-om
   nav a:hover, .typed-om
-  nav a:focus {
+  nav a:focus, .typed-om
+  li a:hover, .typed-om
+  li a:focus {
     --shadow-color: #44A384;
     color: #272822; }
   .props p a::before, .props
   cite a::before, .props
-  nav a::before {
+  nav a::before, .props
+  li a::before {
     border-color: #AF499C; }
   .props p a::after, .props
   cite a::after, .props
-  nav a::after {
+  nav a::after, .props
+  li a::after {
     background: rgba(175, 73, 156, 0.7); }
   .props p a:hover, .props p a:focus, .props
   cite a:hover, .props
   cite a:focus, .props
   nav a:hover, .props
-  nav a:focus {
+  nav a:focus, .props
+  li a:hover, .props
+  li a:focus {
     --shadow-color: #AF499C;
     color: #f9f9f9; }
   .animation p a::before, .animation
   cite a::before, .animation
-  nav a::before {
+  nav a::before, .animation
+  li a::before {
     border-color: #CBE961; }
   .animation p a::after, .animation
   cite a::after, .animation
-  nav a::after {
+  nav a::after, .animation
+  li a::after {
     background: rgba(203, 233, 97, 0.7); }
   .animation p a:hover, .animation p a:focus, .animation
   cite a:hover, .animation
   cite a:focus, .animation
   nav a:hover, .animation
-  nav a:focus {
+  nav a:focus, .animation
+  li a:hover, .animation
+  li a:focus {
     --shadow-color: #CBE961;
     color: #272822; }
   .layout p a::before, .layout
   cite a::before, .layout
-  nav a::before {
+  nav a::before, .layout
+  li a::before {
     border-color: #2E3561; }
   .layout p a::after, .layout
   cite a::after, .layout
-  nav a::after {
+  nav a::after, .layout
+  li a::after {
     background: rgba(46, 53, 97, 0.7); }
   .layout p a:hover, .layout p a:focus, .layout
   cite a:hover, .layout
   cite a:focus, .layout
   nav a:hover, .layout
-  nav a:focus {
+  nav a:focus, .layout
+  li a:hover, .layout
+  li a:focus {
     --shadow-color: #2E3561;
     color: #f9f9f9; }
 
