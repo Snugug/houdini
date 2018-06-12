@@ -134,26 +134,26 @@
       <h2 id="layout-concepts"><span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> Concepts</h2>
       <p>The <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> introduces and uses a number of concepts that may be unfamiliar, so we're going to go over them before diving in.</p>
       <figure id="layout-overview">
-        <img src="layout.svg" alt="Layout Overview">
+        <img src="/layout/layout.svg" alt="Layout Overview">
         <figcaption>
           <p>An overview of how the <span class="layout-name"><span>L</span><span>a</span><span>y</span><span>o</span><span>u</span><span>t</span><span> </span><span>A</span><span>P</span><span>I</span></span> "thinks". We start at the <strong>Current Layout</strong>, which is the layout algorithm for the current box we're laying out. That element's direct parent, the element with the <code>display: layout(custom)</code> on it that's requesting layout be performed, is the <strong>Parent Layout</strong>. The <strong>Parent Layout</strong> has borders, padding, and scroll bars, and those collectively are its <strong>Layout Edges</strong>; the remaining space after we remove the Layout Edges, where we can actually lay out a Parent Layout's children is the <strong>Layout Constraints</strong>. The <strong>Child Layout</strong> is the layout algorithm for the LayoutChild of the Current Layout (I know, a little confusing, bear with me.</p>
           <p>The <strong>LayoutChild</strong> is basically a container to calculate stuff from, and only gets generated under <a href="https://drafts.css-houdini.org/css-layout-api/#layout-children">certain conditions</a>. The LayoutChild can be used to generate a <strong>Fragment</strong>, which is used to actually perform layout</p>
         </figcaption>
       </figure>
       <figure id="layout-layoutchild">
-        <img src="LayoutChild.svg" alt="LayoutChild Overview">
+        <img src="/layout/LayoutChild.svg" alt="LayoutChild Overview">
         <figcaption>
           <p>A LayoutChild has two main bits of functionality; the first is including the <a href="/typed-om">Typed OM</a> <code>styleMap</code> of all properties that the layout says it wants (via <code>childInputProperties</code>) (think like <code>grid-column</code> in CSS Grid for placement). The second is the ability to generate a Fragment by using that information and calculating the <a href="https://drafts.css-houdini.org/css-layout-api/#intrinsic-sizes">Intrinsic Size</a> of the box being laid out. A Fragement's <strong>Intrinsic Size</strong> is two values: the <a href="https://drafts.csswg.org/css-sizing/#min-content-size">min-content-size</a> (smallest a box can be without overflowing, <code>minContentSize</code>), and the <a href="https://drafts.csswg.org/css-sizing/#max-content">max-content-size</a> ("ideal" size of a box given infinite available space, usually smallest it can be while still fitting around its contents, <code>maxContentSize</code>).</p>
         </figcaption>
       </figure>
       <figure>
-        <img src="Fragment.svg" alt="Fragment Overview">
+        <img src="/layout/Fragment.svg" alt="Fragment Overview">
         <figcaption>
           <p>Fragments contain the calculated <code>inline</code> and <code>block</code> (which are <a href="https://drafts.csswg.org/css-writing-modes-4/#abstract-dimnsions">abstract dimensions</a>) offsets and sizes. The sizes are calculated and cannot be changed, but the offsets aren't! We can set these offsets to position our box around, thus doing a layout!</p>
         </figcaption>
       </figure>
       <figure>
-        <img src="LayoutEdges.svg" alt="Layout Edges Overview">
+        <img src="/layout/LayoutEdges.svg" alt="Layout Edges Overview">
         <figcaption>
           <p>Layout Edges also have <code>inline</code> and <code>block</code> dimensions, for <code>padding</code>, <code>border</code>, and <code>scrollbar</code>. They've got <code>all</code> options to group them all together, and <code>inline</code> and <code>block</code> start and end values.</p>
         </figcaption>
