@@ -62,6 +62,7 @@ export default {
 });`,
     css: `.parent {
   display: layout(block-like);
+  --gap: 10;
 }
 
 .one {
