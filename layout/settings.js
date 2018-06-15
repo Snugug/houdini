@@ -228,8 +228,10 @@ div::first-letter {
   // \`childDisplay\` can be 'block' or 'normal'. 'block' is similar to children of flex and grid containers, 'normal'. Otherwise boxes won't be blockified
   // \`sizing\` can be 'block-like' or 'manual'. 'block-like' will make the Layout Constraints's inline size be fixed, and block size be calculated like border-box. Otherwise, it's just the calculated inlineSize and blockSize
   static get layoutOptions() {
-    childDisplay: 'normal',
-    sizing: 'block-like'
+    return {
+      childDisplay: 'normal',
+      sizing: 'block-like'
+    };
   }
 
   // Generator functions instead of normal functions to support async/parallel layout engines
