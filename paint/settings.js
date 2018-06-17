@@ -37,86 +37,220 @@ export default {
 }`,
     html: `<div class="circle"></div>`,
   },
-  face: {
-    name: 'Face',
+  tabs: {
+    name: 'Tabs',
     features: [
       'basic',
       'input properties',
       'input arguments',
+      'component system',
     ],
-    worklet: `registerPaint('face', class {
-    static get inputProperties() { return ['--head-color', '--face-color']; }
-    static get inputArguments() { return ['*']; }
-    paint(ctx, geom, properties, args) {
-      // Change the fill color.
-      const circle = properties.get('--head-color');
-      const face = properties.get('--face-color').length ? properties.get('--face-color') : args[0];
+    worklet: `registerPaint('tab', class {
+  static get inputProperties() {
+    return [
+      'background-color',
+      'border-image-outset',
+      '--tab-multiplier',
+    ];
+  }
 
-      // Determine the center point and radius.
-      const xCircle = geom.width / 2;
-      const yCircle = geom.height / 2;
-      const radiusCircle = Math.min(xCircle, yCircle) - 2.5;
+  static get inputArguments() {
+    return ['*'];
+  }
 
-      const xFace = geom.width / 20;
-      const yFace = geom.height / 20;
-      const radiusFace = Math.min(xFace, yFace);
+  paint(ctx, size, props, args) {
+    const bkg = props.get('background-color');
+    const offset = parseInt(props.get('border-image-outset').toString());
+    const m = props.get('--tab-multiplier').value;
+    const sides = args[0].toString();
 
-      // Draw the circle \o/
+    const x = 10 * m;
+    const y = 5.6 * m;
+
+    if (sides === 'right' || sides === 'middle') {
+      const yoff = size.height - offset - x;
+      const xoff = offset - x;
+
       ctx.beginPath();
-      ctx.arc(xCircle, yCircle, radiusCircle, 0, 2 * Math.PI);
-      ctx.fillStyle = circle;
+      ctx.moveTo(0.0 + xoff, x + yoff);
+      ctx.lineTo(x + xoff, x + yoff);
+      ctx.lineTo(x + xoff, 0.0 + yoff);
+      ctx.bezierCurveTo(x + xoff, y + yoff, y + xoff, x + yoff, 0.0 + xoff, x + yoff);
+      ctx.closePath();
+      ctx.fillStyle = bkg;
       ctx.fill();
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = face;
-      ctx.stroke();
-
-      // Draw the eyes
-      ctx.beginPath();
-      const eyeY = yCircle - yFace * 2;
-
-      let eyeX = xCircle - xFace;
-      if (eyeX < xCircle - radiusCircle / 2) {
-        eyeX = xCircle - radiusCircle / 2;
-      }
-      ctx.arc(eyeX, eyeY, radiusFace, 0, 2 * Math.PI);
-
-      eyeX += xFace * 2;
-      if (eyeX > xCircle + radiusCircle / 2) {
-        eyeX = xCircle + radiusCircle / 2;
-      }
-
-      ctx.arc(eyeX, eyeY, radiusFace, 0, 2 * Math.PI);
-      ctx.fillStyle = face;
-      ctx.fill();
-
-      // draw the mouth
-      ctx.beginPath();
-      ctx.arc(xCircle, yCircle, radiusCircle / 2, 0, Math.PI, false);
-      ctx.lineWidth = 2.5;
-      ctx.strokeStyle = face;
-      ctx.stroke();
     }
+
+    if (sides === 'left' || sides === 'middle') {
+      const yoff = size.height - offset - x;
+      const xoff = size.width - offset;
+
+      ctx.beginPath();
+      ctx.moveTo(x + xoff, x + yoff);
+      ctx.lineTo(0.0 + xoff, x + yoff);
+      ctx.lineTo(0.0 + xoff, 0.0 + yoff);
+      ctx.bezierCurveTo(0.0 + xoff, y + yoff, y + xoff, x + yoff, x + xoff, x + yoff);
+      ctx.closePath();
+      ctx.fillStyle = bkg;
+      ctx.fill();
+    }
+  }
 });`,
     js: `CSS.registerProperty({
-  name: '--head-color',
-  syntax: '<color>',
+  name: '--tab-multiplier',
+  syntax: '<number>',
   inherits: true,
-  initialValue: 'purple',
+  initialValue: 1,
 });
 
-CSS.registerProperty({
-  name: '--face-color',
-  syntax: '<color>',
-  inherits: true,
-  initialValue: 'green',
-});`,
-    css: `.face {
-  --head-color: blue;
-  background-image: paint(face, orange);
-  height: 50vh;
-  width: 50vw;
+const buttons = document.querySelectorAll('.tabs--tab button');
+const sections = document.querySelectorAll('.tabs--section');
+
+for (const button of buttons) {
+  button.addEventListener('click', swap);
+}
+
+function swap(e) {
+  const target = e.target;
+  const targetFor = target.getAttribute('for');
+
+  // Set Active attribute on section
+  for (const section of sections) {
+    if (section.id === targetFor) {
+      section.setAttribute('data-active', true);
+    } else {
+      section.removeAttribute('data-active');
+    }
+  }
+
+  // Set Active attribute on tab
+  for (const button of buttons) {
+    if (button === target) {
+      button.closest('.tabs--tab').setAttribute('data-active', true);
+    } else {
+      button.closest('.tabs--tab').removeAttribute('data-active');
+    }
+  }
+};`,
+    css: `.tabs {
+  --tab-multiplier: 1;
+  --tab-margin: 1px;
+  padding-left: 0;
+  margin-bottom: 0;
+}
+
+.tabs--tab {
+  background: red;
+  border-image-outset: 30px;
+  border-image-slice: 0 fill;
+  border-image-source: paint(tab, middle);
+  border-radius: 5px 5px 0 0;
+  border-radius: 5px 5px 0 0;
+  display: inline-block;
+  font-size: 1em;
+  padding: .15em .25em;
+  position: relative;
+  margin: 0
+  padding: 0;
+}
+
+.tabs--tab:first-of-type {
+  border-image-source: paint(tab, left);
+  margin-right: var(--tab-margin);
+}
+
+.tabs--tab:last-of-type {
+  border-image-source: paint(tab, right);
+  margin-left: var(--tab-margin);
+}
+
+.tabs--tab:not(:first-of-type):not(:last-of-type) {
+  margin-left: var(--tab-margin);
+  margin-right: var(--tab-margin);
+}
+
+.tabs--tab:nth-of-type(2) {
+  background: orange;
+}
+
+.tabs--tab:nth-of-type(3) {
+  background: green;
+  color: white;
+}
+
+.tabs--tab:nth-of-type(4) {
+  background: blue;
+  color: white;
+}
+
+.tabs--tab button {
+  color: inherit;
+  text-decoration: none;
+  padding: inherit;
+  background: none;
+  border: none;
+  font-family: inherit;
+  font-size: inherit;
+}
+
+.tabs--tab[data-active='true'] {
+  z-index: 2;
+}
+
+.tabs--container {
+  position: relative;
+}
+
+.tabs--section {
+  height: 25vh;
+  position: absolute;
+  width: 100vw;
+  z-index: -1;
+  padding: .25em 1em;
+  box-sizing: border-box;
+}
+
+.tabs--section[data-active='true'] {
+  z-index: 0;
+}
+
+#first {
+  background: red;
+}
+
+#second {
+  background: orange;
+}
+
+#third {
+  background: green;
+  color: white;
+}
+
+#fourth {
+  background: blue;
+  color: white;
 }`,
-    html: `<textarea class="face"></textarea>`,
+    html: `<ul class="tabs">
+  <li class="tabs--tab" data-active="true"><button for="first">First</button></li>
+  <li class="tabs--tab"><button for="second">Second</button></li>
+  <li class="tabs--tab"><button for="third">Third</button></li>
+  <li class="tabs--tab"><button for="fourth">Fourth</button></li>
+</ul>
+<div class="tabs--container">
+  <section class="tabs--section" data-active="true" id="first">
+    <p>The first section! Isn't this cool?</p>
+  </section>
+  <section class="tabs--section" id="second">
+    <p>The second section! Isn't this cool?</p>
+  </section>
+  <section class="tabs--section" id="third">
+    <p>The third section! Isn't this cool?</p>
+  </section>
+  <section class="tabs--section" id="fourth">
+    <p>The fourth section! Isn't this cool?</p>
+  </section>
+</div>`,
   },
   'generative art': {
     name: 'Generative Art',
