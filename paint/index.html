@@ -7,7 +7,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="https://fonts.googleapis.com/css?family=IBM+Plex+Mono:400,400i|IBM+Plex+Sans:400,400i,600,600i|Finger+Paint&text=PAINT" rel="stylesheet">
   <link rel="stylesheet" href="/shared/css/style.css">
-
   <script type="module">
     import Editor from '/shared/editor.js';
     import REPL from '/shared/repl.js'
@@ -66,17 +65,6 @@
 </style>
 
 <body class="paint">
-<!--  <nav>
-    <ul>
-      <li><a href="/">Houdini</a></li>
-      <li><a href="/custom-properties">Custom Properties</a></li>
-      <li><a href="/paint">Paint API</a></li>
-      <li><a href="/animation">Animation API</a></li>
-      <li><a href="/layout">Layout API</a></li>
-      <li><a href="/more">More</a></li>
-      <li><a href="http://ishoudinireadyyet.com/">Is Houdini Ready?</a></li>
-    </ul>
-  </nav> -->
   <header class="paint-api">
     <h1 class="paint-api--text">Paint API</h1>
   </header>
@@ -127,6 +115,11 @@ registerPaint('sample-paint', class {
 });
 </code></pre>
       <p>A <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> <a href="/worklets">worklet</a> can read in input properties on the element it's attached to (either <a href="/custom-properties">custom properties</a> or standard properties), it can be passed arguments with <a href="https://www.w3.org/TR/css3-values/">CSS Value</a> types for each argument, and options for the context can be set (like if Alpha is allowed)</p>
+    </article>
+
+    <article>
+      <h2 id="polyfill"><span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> Polyfill</h2>
+      <p>Start using the <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> today! Google Chrome Labs maintains a <a href="https://github.com/GoogleChromeLabs/css-paint-polyfill">polyfill</a> for the <span class="paint-api paint-api--INLINE"><span class="paint-api--text">Paint API</span></span> which makes it available in all browsers that support Canvas! <strong>Note: Not currently in use on this site.</strong></p>
     </article>
 
     <article>
