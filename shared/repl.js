@@ -259,7 +259,7 @@ export default class {
       if (type === 'paint') {
         worklet = 'CSS.paintWorklet';
       } else if (type === 'animation') {
-        worklet = 'animationWorklet';
+        worklet = 'CSS.animationWorklet';
       } else if (type === 'layout') {
         worklet = 'CSS.layoutWorklet';
       }

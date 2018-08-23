@@ -16,8 +16,8 @@
       import REPL from '/shared/repl.js';
 
       async function init() {
-        await animationWorklet.addModule('/animation/gradient.js');
-        await animationWorklet.addModule('/animation/parallax.js');
+        await CSS.animationWorklet.addModule('/animation/gradient.js');
+        await CSS.animationWorklet.addModule('/animation/parallax.js');
 
         const landscape = document.querySelector('.landscape');
         const header = document.querySelector('.animation-header');
@@ -507,7 +507,7 @@
       <h2 id="worklet"><span class="anim-span">Animation API</span> Worklet</h2>
       <p>The <span class="anim-span">Animation API</span> works a little different than both the <a href="/paint">Paint API</a> and the <a href="/layout">Layout API</a> in that it isn't a "set it and forget it" worklet, but rather it gets loaded and then used by creating a new <code>WorkletAnimation</code> which consists of the name of the registered worklet to use, the <code>KeyframeEffect</code> to apply, at least one timeline to base the animation on (like the new <a href="https://github.com/wicg/animation-worklet/#scrolltimeline">ScrollTimeline</a>), and options to pass in to the worklet's constructor.</p>
       <p><strong>Worklet Overview</strong></p>
-      <pre><code class="language-js">// https://wicg.github.io/animation-worklet/ April 7, 2018 Draft Community Group Report
+      <pre><code class="language-js">// https://wicg.github.io/animation-worklet/ August 13, 2018 Draft Community Group Report
 
 registerAnimator('sample-animator', class {
   constructor(options) {
@@ -524,7 +524,7 @@ registerAnimator('sample-animator', class {
   }
 });</code></pre>
       <p><strong>Register and Use Worklet from Main JavaScript</strong></p>
-      <pre><code class="language-js">await animationWorklet.addModule('path/to/animation-worklet.js');
+      <pre><code class="language-js">await CSS.animationWorklet.addModule('path/to/animation-worklet.js');
 
 // Element we want to animate
 const elem = document.querySelector('#my-elem');
