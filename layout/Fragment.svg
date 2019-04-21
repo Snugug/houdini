@@ -2,8 +2,8 @@
   <style>
     .st0{font-family:&apos;ArialMT&apos;}.st1{font-size:16px}.st2{fill:none;stroke:#000;stroke-linecap:round;stroke-linejoin:round}.st3{fill:#fff}.st7{fill:none}.st8{fill:#ff9200}
   </style>
-  <text transform="translate(326.65 203.24)" class="st0 st1">
-    Fragment
+  <text transform="translate(304.65 203.24)" class="st0 st1">
+    LayoutFragment
   </text>
   <path class="st2" d="M218.8 142.6v-34h292.5v34.2"/>
   <path class="st3" d="M310.6 93.1H388v31h-77.4v-31z"/>
